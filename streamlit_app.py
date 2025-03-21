@@ -3,11 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
-#from ipywidgets import widgets, interactive
-#from ipywidgets.embed import embed_minimal_html
 
 vehicles_df = pd.read_csv('limited_vehicles.csv')
-## topselling_df = pd.read_excel('topsellingcars.xlsx')
 grid_emissions_df = pd.read_csv('grid_emissions_forecast.csv')
 
 def plot_cars(model_1, model_2, gas_price, kwh_price, grid_emissions_option, miles_per_year):
@@ -107,7 +104,7 @@ def plot_cars(model_1, model_2, gas_price, kwh_price, grid_emissions_option, mil
     st.pyplot(fig)
     return plot_func_df
 
-vehicles_df = vehicles_df[['year','make', 'model', 'comb08', 'combE', 'fuelCost08', 'cylinders', 'fuelType', 'id', 'VClass']]
+#vehicles_df = vehicles_df[['year','make', 'model', 'comb08', 'combE', 'fuelCost08', 'cylinders', 'fuelType', 'id', 'VClass']]
 vehicles_df['running_cost_of_ownership'] = 0.00
 vehicles_df['running_emissions'] = 0.00
 
