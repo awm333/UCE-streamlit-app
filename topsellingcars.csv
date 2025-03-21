@@ -1,0 +1,13 @@
+﻿Make,Model_EPA,epa_id,Model_CarbonCounter,Year _CarbonCounter,MSRP,Manufacture_Emissions_tCO2,Production_Emissions,Battery_Emissions
+Tesla,Model Y Long Range AWD,43406,Model Y | Long Range AWD,2021,49990,12.46784,36.1,37.5
+Tesla,Model 3 Long Range AWD,43401,Model 3 | Long Range AWD,2021,46990,11.95964,33.1,37.5
+Tesla,Model S Long Range,44051,Model S | Long Range Plus,2021,69420,14.67004,36.6,50
+Ford,Mustang Mach-E AWD,43602,Mustang Mach-E | AWD,2021,38095,12.24762,38.3,34
+RAM,1500 4WD,43014,1500 | 4WD 3.6L StartStop,2021,35745,8.28366,48.9,0
+Ford,F150 Pickup 4WD,43464,F150 | 4WD 2.7L,2021,34780,7.67382,45.3,0
+Chevrolet,Silverado,43192,Silverado | 4WD 4.3L,2021,35195,8.53776,50.4,0
+Toyota,RAV4 | AWD,42969,RAV4 | AWD,2021,27450,6.58966,38.9,0
+Ford,F-150 Lightning Platinum 4WD,45316,F-150 Lightning | Pro 4WD,2022,51974,16.2624,47,49
+Nissan,Leaf (62 kW-hr battery pack),43665,Leaf (62 kW-hr battery pack),2021,38220,10.8416,33,31
+Nissan,Leaf (40 kW-hr battery pack),43664,Leaf (40 kW-hr battery pack),2021,31620,8.91044,32.6,20
+Honda Civic,Civic 4Dr,43356,Civic 4Dr 1.5L,2021,21250,5.5902,33,0
