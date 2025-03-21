@@ -6,8 +6,8 @@ import numpy as np
 #from ipywidgets import widgets, interactive
 #from ipywidgets.embed import embed_minimal_html
 
-vehicles_df = pd.read_csv('data/vehicles.csv')
-topselling_df = pd.read_excel('data/topsellingcars.xlsx')
+vehicles_df = pd.read_csv('data/limited_vehicles.csv')
+## topselling_df = pd.read_excel('data/topsellingcars.xlsx')
 grid_emissions_df = pd.read_excel('data/grid_emissions_forecast.xlsx')
 
 def plot_cars(model_1, model_2, gas_price, kwh_price, grid_emissions_option, miles_per_year):
