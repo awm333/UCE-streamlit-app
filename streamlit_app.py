@@ -130,8 +130,5 @@ with col2:
 
 st.header('Check out these charts!')
 
-st.write(vehicles_df.columns)
-
-
 plot_cars(model_1=EV_dropdown, model_2=ICEV_dropdown, gas_price=3.15, kwh_price=0.12, grid_emissions_option='Forecasts', miles_per_year=11000)
 
