@@ -8,7 +8,7 @@ import numpy as np
 
 vehicles_df = pd.read_csv('limited_vehicles.csv')
 ## topselling_df = pd.read_excel('topsellingcars.xlsx')
-grid_emissions_df = pd.read_excel('grid_emissions_forecast.xlsx')
+grid_emissions_df = pd.read_csv('grid_emissions_forecast.csv')
 
 def plot_cars(model_1, model_2, gas_price, kwh_price, grid_emissions_option, miles_per_year):
     fig, axs = plt.subplots(nrows=1, ncols=2, figsize=(20, 5))
