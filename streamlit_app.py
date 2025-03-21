@@ -111,7 +111,7 @@ vehicles_df = vehicles_df[['year','make', 'model', 'comb08', 'combE', 'fuelCost0
 vehicles_df['running_cost_of_ownership'] = 0.00
 vehicles_df['running_emissions'] = 0.00
 
-vehicles_df = pd.merge(topselling_df, vehicles_df, how='left', left_on=['epa_id'], right_on=['id'])
+#vehicles_df = pd.merge(topselling_df, vehicles_df, how='left', left_on=['epa_id'], right_on=['id'])
 
 st.title('Utah Clean Energy EV vs ICEV Cost and Emissions Calculator')
 
