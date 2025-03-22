@@ -84,7 +84,7 @@ def cost_intersection_point(df_EV, df_ICEV):
     return return_intersection_point
 
 def plot_cars(model_1, model_2, gas_price, kwh_price, grid_emissions_option, miles_per_year):
-    fig, axs = plt.subplots(nrows=1, ncols=2, figsize=(20, 5))
+    fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(20, 20))
     
     EV_model_df = vehicles_df[vehicles_df['model'] == model_1]
     ICEV_model_df = vehicles_df[vehicles_df['model'] == model_2]
@@ -176,6 +176,8 @@ def plot_cars(model_1, model_2, gas_price, kwh_price, grid_emissions_option, mil
     axs[1].set_xticks(range(0, 21, 2))
     
     st.pyplot(fig)
+    st.metric("Breakeven Year", intersection_point_cost[0], delta="2") ## could be used for showing the dashboarding metrics that Kelbe wants
+
 
 vehicles_df['running_cost_of_ownership'] = 0.00
 vehicles_df['running_emissions'] = 0.00
@@ -196,8 +198,17 @@ with col1:
          'Gas Price ($/gallon):', 
          2.00, 5.00, 3.15)
     
-    miles_input_box = st.number_input('Miles/Year',
-                                    0, 20000, 11000, 500)
+
+    electricity_slider = st.slider(
+        'Electricity Price ($/kWh):',
+        0.00, 0.30, 0.12)
+
+    
+
+    tax_credit_link = 'https://homes.rewiringamerica.org/federal-incentives/30d-new-ev-tax-incentive'
+    tax_credit_checkbox = st.checkbox(
+         'Include Federal Tax Credit',
+         help='Check this box to include the Federal Tax Credit for EVs.  For more information, [click here](' + tax_credit_link + ').')
 
 with col2:
     ICEV_dropdown = st.selectbox(
@@ -205,14 +216,19 @@ with col2:
         vehicles_df[vehicles_df['fuelType'] == 'Regular']['model']
     )
 
-    electricity_slider = st.slider(
-        'Electricity Price ($/kWh):',
-        0.00, 0.30, 0.12)
-    
     grid_emissions_radio_buttons = st.radio(
-     'Grid Emissions Options:', ['Forecasts', 'Current Emissions', 'All-Coal'])
+     'Grid Emissions Options:', 
+     ['Forecasts', 'Current Emissions', 'All-Coal'],
+     captions=["PacifiCorp's Forecasts", "Based on 2023 Actulas", "Hypothetical All-Coal Grid"])
+    
+    miles_input_box = st.number_input('Miles/Year',
+                                    0, 20000, 11000, 500)
+
 #st.header('Check out these charts!')
+
+
 
 vehicles_df.head(2)
 
 plot_cars(model_1=EV_dropdown, model_2=ICEV_dropdown, gas_price=gas_price_slider, kwh_price=electricity_slider, grid_emissions_option=grid_emissions_radio_buttons, miles_per_year=miles_input_box)
+
