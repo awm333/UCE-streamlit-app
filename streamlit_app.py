@@ -195,6 +195,9 @@ with col1:
     gas_price_slider = st.slider(
          'Gas Price ($/gallon):', 
          2.00, 5.00, 3.15)
+    
+    miles_input_box = st.number_input('Miles/Year',
+                                    0, 20000, 11000, 500)
 
 with col2:
     ICEV_dropdown = st.selectbox(
@@ -204,13 +207,12 @@ with col2:
 
     electricity_slider = st.slider(
         'Electricity Price ($/kWh):',
-        0.10, 0.30, 0.12)
-
-grid_emissions_radio_buttons = st.radio(
+        0.00, 0.30, 0.12)
+    
+    grid_emissions_radio_buttons = st.radio(
      'Grid Emissions Options:', ['Forecasts', 'Current Emissions', 'All-Coal'])
 #st.header('Check out these charts!')
 
 vehicles_df.head(2)
 
-plot_cars(model_1=EV_dropdown, model_2=ICEV_dropdown, gas_price=gas_price_slider, kwh_price=electricity_slider, grid_emissions_option=grid_emissions_radio_buttons, miles_per_year=11000)
-
+plot_cars(model_1=EV_dropdown, model_2=ICEV_dropdown, gas_price=gas_price_slider, kwh_price=electricity_slider, grid_emissions_option=grid_emissions_radio_buttons, miles_per_year=miles_input_box)
