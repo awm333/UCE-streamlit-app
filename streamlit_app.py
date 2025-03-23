@@ -1,9 +1,13 @@
 import streamlit as st
+
+st. set_page_config(layout="wide")
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import seaborn as sns
 import numpy as np
+import altair as alt
 
 vehicles_df = pd.read_csv('limited_vehicles.csv')
 grid_emissions_df = pd.read_csv('grid_emissions_forecast.csv')
@@ -84,10 +88,12 @@ def cost_intersection_point(df_EV, df_ICEV):
     return_intersection_point = (return_yr, return_cost)
     return return_intersection_point
 
-def plot_cars(model_1, model_2, gas_price, kwh_price, grid_emissions_option, miles_per_year):
+def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_option=1, miles_per_year=11000, apply_tax_credit=False):
     #fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(20, 20))
 
     fig1 = plt.figure(figsize=(20, 10))
+    fig1.patch.set_linewidth(2)
+    fig1.patch.set_edgecolor('black')
     ax1 = fig1.add_subplot(111)
 
     fig2 = plt.figure(figsize=(20, 10))
@@ -130,8 +136,17 @@ def plot_cars(model_1, model_2, gas_price, kwh_price, grid_emissions_option, mil
     
     intersection_point_emissions = emissions_intersection_point(EV_model_df, ICEV_model_df)
     intersection_point_cost = cost_intersection_point(EV_model_df, ICEV_model_df)
+    
     #union of the two dataframes
     plot_func_df = pd.concat([EV_model_df, ICEV_model_df])
+
+    if apply_tax_credit:
+        tax_credit_df = EV_model_df
+        tax_credit_df['running_cost_of_ownership'] = tax_credit_df['running_cost_of_ownership'] - 7500
+        tax_credit_df['model'] = 'EV with Tax Credit'
+        plot_func_df = pd.concat([tax_credit_df, plot_func_df])
+
+    #st.dataframe(plot_func_df)
 
     #Interesection Point Annotations
     if intersection_point_cost[0] != 0:
@@ -171,13 +186,16 @@ def plot_cars(model_1, model_2, gas_price, kwh_price, grid_emissions_option, mil
 
 
     #axs[0].set_title(f'Cost of Ownership')# for {model_1} and {model_2}', fontname='Sans Serif')
-    ax1.set_xlabel('Years of Ownership', fontsize=28)
-    ax1.set_ylabel('Cost of Ownership ($) \n', fontsize=28)
+    ax1.set_title('\n')
+    ax1.set_xlabel('\n Years of Ownership \n', fontsize=28)
+    ax1.set_ylabel('\n Cost of Ownership ($) \n', fontsize=28)
     ax1.set_ylim(bottom = 0)
     ax1.set_xlim(0, 20)
     ax1.set_xticks(range(0, 21, 2))
     ax1.lines[0].set_linewidth(3)
     ax1.lines[1].set_linewidth(3)
+    ax1.spines['top'].set_visible(False)
+    ax1.spines['right'].set_visible(False)
 
     #Emissions Plot
     sns.lineplot(data=plot_func_df, 
@@ -186,7 +204,7 @@ def plot_cars(model_1, model_2, gas_price, kwh_price, grid_emissions_option, mil
                 hue='model',
                 ax=ax2)
     #ax2.set_title(f'Emissions for {model_1} and {model_2}')
-    ax2.set_xlabel('Years of Ownership', fontsize=28)
+    ax2.set_xlabel('\nYears of Ownership', fontsize=28)
     ax2.set_ylabel('Emissions (tCO2) \n', fontsize=28)
     ax2.set_ylim(bottom = 0)
     ax2.set_ylim(0,140)
@@ -195,12 +213,41 @@ def plot_cars(model_1, model_2, gas_price, kwh_price, grid_emissions_option, mil
     ax2.lines[0].set_linewidth(3)
     ax2.lines[1].set_linewidth(3)
 
+    
+    #st.markdown('## Matplotlib Chart')
+
     st.markdown("<h2 style='text-align: center;'>Cost of Ownership</h2>", unsafe_allow_html=True)
     st.pyplot(fig1)
 
     st.markdown("<h2 style='text-align: center;'>Emissions</h2>", unsafe_allow_html=True)
     st.pyplot(fig2)
     # st.metric("Breakeven Year", intersection_point_cost[0], delta="2") ## could be used for showing the dashboarding metrics that Kelbe wants
+    st.markdown('## Altair Chart')
+
+    line_chart = alt.Chart(plot_func_df).mark_line().encode(
+         x='years_of_ownership:O',  # O makes it an ordinal scale
+         y='running_cost_of_ownership:Q',  # Q makes it a quantitative scale
+         color='model:N'  # N makes it a nominal scale
+         ).properties(
+              title="Altair Cost of Ownership"
+              )
+    
+    vline = alt.Chart(pd.DataFrame({'x': [intersection_point_cost[0]], 'y_start': [0], 'y_end':[intersection_point_cost[1]]})).mark_rule(color='red').encode(
+         x='x:O',
+         y='y_start:Q',
+         y2='y_end:Q'
+         )
+
+    chart = line_chart + vline
+
+    st.altair_chart(chart, use_container_width=True)
+
+    st.markdown('## Streamlit Chart')
+
+    st.line_chart(data = plot_func_df,
+                  x = 'years_of_ownership',
+                  y = 'running_cost_of_ownership',
+                  color = 'model')
 
 def add_make_to_model(model):
     make = vehicles_df[vehicles_df['model'] == model]['make'].values[0]
@@ -217,26 +264,33 @@ def radio_button_output(grid_emissions_option):
 vehicles_df['running_cost_of_ownership'] = 0.00
 vehicles_df['running_emissions'] = 0.00
 
+### Web App UI ###
+
 st.title('Utah Clean Energy EV vs ICEV Cost and Emissions Calculator')
 
 st.write('Created By Adrian Martino')
 
-col1, col2 = st.columns(2)
-with col1:
+with st.sidebar:
     EV_dropdown = st.selectbox(
         label='Select EV',
         options=vehicles_df[vehicles_df['fuelType'] == 'Electricity']['model'],
         format_func=add_make_to_model
-    )
-
-    gas_price_slider = st.slider(
-         label='Gas Price ($/gallon):', 
-         min_value=2.00, 
-         max_value=5.00, 
-         value=3.15,
-         help='Here is why we made this choice',
-         label_visibility="visible")
+        )
     
+    ICEV_dropdown = st.selectbox(
+        label = 'Select ICEV:',
+        options = vehicles_df[vehicles_df['fuelType'] == 'Regular']['model'],
+        format_func = add_make_to_model
+        )
+    
+    gas_price_slider = st.slider(
+        label='Gas Price ($/gallon):', 
+        min_value=2.00, 
+        max_value=5.00, 
+        value=3.15,
+        help='Here is why we made this choice',
+        label_visibility="visible")
+        
     electricity_slider = st.slider(
         label='Electricity Price ($/kWh):',
         min_value=0.00, 
@@ -247,32 +301,25 @@ with col1:
 
     tax_credit_link = 'https://homes.rewiringamerica.org/federal-incentives/30d-new-ev-tax-incentive'
     tax_credit_checkbox = st.checkbox(
-         label='Include Federal Tax Credit',
-         help='Check this box to include the Federal Tax Credit for EVs.  For more information, [click here](' + tax_credit_link + ').',
-         )
+        label='Apply Full Federal Tax Credit',
+        help='Check this box to include the full, $7,500 Federal Tax Credit for EVs.  For more information, [click here](' + tax_credit_link + ').',
+        )
 
-with col2:
-    ICEV_dropdown = st.selectbox(
-        label = 'Select ICEV:',
-        options = vehicles_df[vehicles_df['fuelType'] == 'Regular']['model'],
-        format_func = add_make_to_model
-    )
+    miles_input_box = st.number_input(
+        label='Miles Driven per Year',
+        min_value=0, 
+        max_value=20000, 
+        value=11000, 
+        step=500)
 
     grid_emissions_radio_buttons = st.radio(
-     label='Grid Emissions Options:', 
-     options=[1,2,3],
-     captions=["PacifiCorp's Forecasts", "Based on 2023 Actuals", "Hypothetical All-Coal Grid"],
-     format_func=radio_button_output
-     )
-    
-    miles_input_box = st.number_input(
-         label='Miles/Year',
-         min_value=0, 
-         max_value=20000, 
-         value=11000, 
-         step=500)
+        label='Grid Emissions Options:', 
+        options=[1,2,3],
+        captions=["PacifiCorp's Forecasts", "Based on 2023 Actuals", "Hypothetical All-Coal Grid"],
+        format_func=radio_button_output
+        )
 
 #st.header('Check out these charts!')
 
-plot_cars(model_1=EV_dropdown, model_2=ICEV_dropdown, gas_price=gas_price_slider, kwh_price=electricity_slider, grid_emissions_option=grid_emissions_radio_buttons, miles_per_year=miles_input_box)
+plot_cars(model_1=EV_dropdown, model_2=ICEV_dropdown, gas_price=gas_price_slider, kwh_price=electricity_slider, grid_emissions_option=grid_emissions_radio_buttons, miles_per_year=miles_input_box, apply_tax_credit=tax_credit_checkbox)
 
