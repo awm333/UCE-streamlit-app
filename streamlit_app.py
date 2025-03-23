@@ -177,7 +177,6 @@ def plot_cars(model_1, model_2, gas_price, kwh_price, grid_emissions_option, mil
     
     st.pyplot(fig)
     st.metric("Breakeven Year", intersection_point_cost[0], delta="2") ## could be used for showing the dashboarding metrics that Kelbe wants
-    st.dataframe(EV_model_df)
 
 def add_make_to_model(model):
     make = vehicles_df[vehicles_df['model'] == model]['make'].values[0]
