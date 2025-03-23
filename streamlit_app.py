@@ -230,7 +230,7 @@ with col2:
     grid_emissions_radio_buttons = st.radio(
      label='Grid Emissions Options:', 
      options=['Actual Projected Grd', 'Today\'s Grid', 'All-Coal'],
-     captions=["PacifiCorp's Forecasts", "Based on 2023 Actulas", "Hypothetical All-Coal Grid"])
+     captions=["PacifiCorp's Forecasts", "Based on 2023 Actuals", "Hypothetical All-Coal Grid"])
     
     miles_input_box = st.number_input(
          label='Miles/Year',
