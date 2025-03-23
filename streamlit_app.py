@@ -85,7 +85,13 @@ def cost_intersection_point(df_EV, df_ICEV):
 
 def plot_cars(model_1, model_2, gas_price, kwh_price, grid_emissions_option, miles_per_year):
     fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(20, 20))
-    
+
+    fig1 = plt.figure(figsize=(20, 10))
+    ax1 = fig1.add_subplot(111)
+
+    fig2 = plt.figure(figsize=(20, 10))
+    ax2 = fig2.add_subplot(111)
+
     EV_model_df = vehicles_df[vehicles_df['model'] == model_1]
     ICEV_model_df = vehicles_df[vehicles_df['model'] == model_2]
     
@@ -126,7 +132,6 @@ def plot_cars(model_1, model_2, gas_price, kwh_price, grid_emissions_option, mil
     #union of the two dataframes
     plot_func_df = pd.concat([EV_model_df, ICEV_model_df])
 
-
     #Interesection Point Annotations
     if intersection_point_cost[0] != 0:
         # axs[0].annotate('Breakeven by year ' + str(intersection_point_cost[0]), 
@@ -136,47 +141,60 @@ def plot_cars(model_1, model_2, gas_price, kwh_price, grid_emissions_option, mil
         # axs[0].text(x = intersection_point_cost[0] - 4, 
         #             y = intersection_point_cost[1] + 2000, 
         #             s = f'${round(intersection_point_cost[1], 2)}', fontsize=12)
-        axs[0].vlines(x = intersection_point_cost[0], ymin = 0, ymax = intersection_point_cost[1], color = 'lightgrey', linestyles='dashed')
-        axs[0].hlines(y = intersection_point_cost[1], xmin = 0, xmax = intersection_point_cost[0], color = 'lightgrey', linestyles='dashed')
+        ax1.vlines(x = intersection_point_cost[0], ymin = 0, ymax = intersection_point_cost[1], color = 'lightgrey', linestyles='dashed')
+        ax1.hlines(y = intersection_point_cost[1], xmin = 0, xmax = intersection_point_cost[0], color = 'lightgrey', linestyles='dashed')
     
-    if intersection_point_emissions[0] != 0:
-        # axs[1].text(x = intersection_point_emissions[0] - 4, 
-        #             y = intersection_point_emissions[1] + 0.25, 
-        #             s = f'{round(intersection_point_emissions[1], 2)} tCO2', fontsize=12)
-        axs[1].vlines(x = intersection_point_emissions[0], ymin = 0, ymax = intersection_point_emissions[1], color = 'lightgrey', linestyles='dashed')
-        axs[1].hlines(y = intersection_point_emissions[1], xmin = 0, xmax = intersection_point_emissions[0], color = 'lightgrey', linestyles='dashed')
+    # if intersection_point_emissions[0] != 0:
+    #     # axs[1].text(x = intersection_point_emissions[0] - 4, 
+    #     #             y = intersection_point_emissions[1] + 0.25, 
+    #     #             s = f'{round(intersection_point_emissions[1], 2)} tCO2', fontsize=12)
+    #     axs[1].vlines(x = intersection_point_emissions[0], ymin = 0, ymax = intersection_point_emissions[1], color = 'lightgrey', linestyles='dashed')
+    #     axs[1].hlines(y = intersection_point_emissions[1], xmin = 0, xmax = intersection_point_emissions[0], color = 'lightgrey', linestyles='dashed')
 
-
+   
     #Cost Plot
+    #sns.set_style("white")
+    #sns.set_palette("muted")
+    plt.rcParams["font.family"] = "Helvetica"
+    plt.rcParams["font.size"] = 24
+    #axs[0].set_facecolor('#F2F0EA')
     sns.lineplot(data=plot_func_df, 
                 x='years_of_ownership', 
                 y='running_cost_of_ownership', 
                 hue='model',
-                ax=axs[0])
-    axs[0].set_title(f'Cost of Ownership for {model_1} and {model_2}')
-    axs[0].set_xlabel('Years of Ownership')
-    axs[0].set_ylabel('Cost of Ownership ($)')
-    axs[0].set_ylim(bottom = 0)
-    axs[0].set_xlim(0, 20)
-    axs[0].set_xticks(range(0, 21, 2))
-
+                ax=ax1)
+    
+    #axs[0].set_title(f'Cost of Ownership')# for {model_1} and {model_2}', fontname='Sans Serif')
+    ax1.set_xlabel('Years of Ownership', fontsize=28)
+    ax1.set_ylabel('Cost of Ownership ($)', fontsize=28)
+    ax1.set_ylim(bottom = 0)
+    ax1.set_xlim(0, 20)
+    ax1.set_xticks(range(0, 21, 2))
+    ax1.lines[0].set_linewidth(3)
+    ax1.lines[1].set_linewidth(3)
 
     #Emissions Plot
     sns.lineplot(data=plot_func_df, 
                 x='years_of_ownership', 
                 y='running_emissions', 
                 hue='model',
-                ax=axs[1])
-    axs[1].set_title(f'Emissions for {model_1} and {model_2}')
-    axs[1].set_xlabel('Years of Ownership')
-    axs[1].set_ylabel('Emissions (tCO2)')
-    axs[1].set_ylim(bottom = 0)
-    axs[1].set_ylim(0,140)
-    axs[1].set_xlim(0, 20)
-    axs[1].set_xticks(range(0, 21, 2))
-    
-    st.pyplot(fig)
-    st.metric("Breakeven Year", intersection_point_cost[0], delta="2") ## could be used for showing the dashboarding metrics that Kelbe wants
+                ax=ax2)
+    ax2.set_title(f'Emissions for {model_1} and {model_2}')
+    ax2.set_xlabel('Years of Ownership')
+    ax2.set_ylabel('Emissions (tCO2)')
+    ax2.set_ylim(bottom = 0)
+    ax2.set_ylim(0,140)
+    ax2.set_xlim(0, 20)
+    ax2.set_xticks(range(0, 21, 2))
+    ax2.lines[0].set_linewidth(3)
+    ax2.lines[1].set_linewidth(3)
+
+    st.markdown("<h2 style='text-align: center;'>Cost of Ownership</h2>", unsafe_allow_html=True)
+    st.pyplot(fig1)
+
+    st.markdown("<h2 style='text-align: center;'>Emissions</h2>", unsafe_allow_html=True)
+    st.pyplot(fig2)
+    # st.metric("Breakeven Year", intersection_point_cost[0], delta="2") ## could be used for showing the dashboarding metrics that Kelbe wants
 
 def add_make_to_model(model):
     make = vehicles_df[vehicles_df['model'] == model]['make'].values[0]
@@ -237,7 +255,7 @@ with col2:
     grid_emissions_radio_buttons = st.radio(
      label='Grid Emissions Options:', 
      options=[1,2,3],
-     captions=["PacifiCorp's Forecasts", "Based on 2023 Actulas", "Hypothetical All-Coal Grid"],
+     captions=["PacifiCorp's Forecasts", "Based on 2023 Actuals", "Hypothetical All-Coal Grid"],
      format_func=radio_button_output
      )
     
