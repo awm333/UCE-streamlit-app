@@ -108,13 +108,13 @@ def plot_cars(model_1, model_2, gas_price, kwh_price, grid_emissions_option, mil
     EV_model_df['starting_emissions'] = np.where(EV_model_df['years_of_ownership'] == 0, 
                                                  EV_model_df['Manufacture_Emissions_tCO2'], 
                                                  0)
-    if grid_emissions_option == 'Forecasts':
+    if grid_emissions_option == 1:
         EV_model_df['ty_plus'] = EV_model_df['ty_emissions'] + EV_model_df['starting_emissions']
         EV_model_df['running_emissions'] = EV_model_df['ty_plus'].cumsum()
-    elif grid_emissions_option == 'Current Emissions':
+    elif grid_emissions_option == 2:
         EV_model_df['running_emissions'] = EV_model_df['Manufacture_Emissions_tCO2'] + ((0.532954 / 1000 * EV_model_df['combE'] / 100 * miles_per_year * EV_model_df['years_of_ownership']))
         #'combE' = kWh/100 miles, 0.532954 tCO2/MWh (from Logan)
-    elif grid_emissions_option == 'All-Coal':
+    elif grid_emissions_option == 3:
         EV_model_df['running_emissions'] = EV_model_df['Manufacture_Emissions_tCO2'] + ((1.047798 / 1000 * EV_model_df['combE'] / 100 * miles_per_year * EV_model_df['years_of_ownership']))
         #'combE' = kWh/100 miles, 1.047798 tCO2/MWh (from EIA 2.31 lbs CO2/kWh generated from Coal)
 
@@ -177,10 +177,19 @@ def plot_cars(model_1, model_2, gas_price, kwh_price, grid_emissions_option, mil
     
     st.pyplot(fig)
     st.metric("Breakeven Year", intersection_point_cost[0], delta="2") ## could be used for showing the dashboarding metrics that Kelbe wants
+    st.dataframe(EV_model_df)
 
 def add_make_to_model(model):
     make = vehicles_df[vehicles_df['model'] == model]['make'].values[0]
     return make + " " + model
+
+def radio_button_output(grid_emissions_option):
+    if grid_emissions_option == 1:
+        return 'Actual Projected Grid'
+    elif grid_emissions_option == 2:
+        return 'Today\'s Grid'
+    elif grid_emissions_option == 3:
+        return 'All-Coal'
 
 vehicles_df['running_cost_of_ownership'] = 0.00
 vehicles_df['running_emissions'] = 0.00
@@ -190,7 +199,6 @@ st.title('Utah Clean Energy EV vs ICEV Cost and Emissions Calculator')
 st.write('Created By Adrian Martino')
 
 col1, col2 = st.columns(2)
-
 with col1:
     EV_dropdown = st.selectbox(
         label='Select EV',
@@ -216,7 +224,7 @@ with col1:
 
     tax_credit_link = 'https://homes.rewiringamerica.org/federal-incentives/30d-new-ev-tax-incentive'
     tax_credit_checkbox = st.checkbox(
-         'Include Federal Tax Credit',
+         label='Include Federal Tax Credit',
          help='Check this box to include the Federal Tax Credit for EVs.  For more information, [click here](' + tax_credit_link + ').',
          )
 
@@ -224,13 +232,15 @@ with col2:
     ICEV_dropdown = st.selectbox(
         label = 'Select ICEV:',
         options = vehicles_df[vehicles_df['fuelType'] == 'Regular']['model'],
-        format_func=add_make_to_model
+        format_func = add_make_to_model
     )
 
     grid_emissions_radio_buttons = st.radio(
      label='Grid Emissions Options:', 
-     options=['Actual Projected Grd', 'Today\'s Grid', 'All-Coal'],
-     captions=["PacifiCorp's Forecasts", "Based on 2023 Actuals", "Hypothetical All-Coal Grid"])
+     options=[1,2,3],
+     captions=["PacifiCorp's Forecasts", "Based on 2023 Actulas", "Hypothetical All-Coal Grid"],
+     format_func=radio_button_output
+     )
     
     miles_input_box = st.number_input(
          label='Miles/Year',
