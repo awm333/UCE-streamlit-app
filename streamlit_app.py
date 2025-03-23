@@ -84,7 +84,7 @@ def cost_intersection_point(df_EV, df_ICEV):
     return return_intersection_point
 
 def plot_cars(model_1, model_2, gas_price, kwh_price, grid_emissions_option, miles_per_year):
-    fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(20, 20))
+    #fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(20, 20))
 
     fig1 = plt.figure(figsize=(20, 10))
     ax1 = fig1.add_subplot(111)
@@ -144,12 +144,12 @@ def plot_cars(model_1, model_2, gas_price, kwh_price, grid_emissions_option, mil
         ax1.vlines(x = intersection_point_cost[0], ymin = 0, ymax = intersection_point_cost[1], color = 'lightgrey', linestyles='dashed')
         ax1.hlines(y = intersection_point_cost[1], xmin = 0, xmax = intersection_point_cost[0], color = 'lightgrey', linestyles='dashed')
     
-    # if intersection_point_emissions[0] != 0:
-    #     # axs[1].text(x = intersection_point_emissions[0] - 4, 
-    #     #             y = intersection_point_emissions[1] + 0.25, 
-    #     #             s = f'{round(intersection_point_emissions[1], 2)} tCO2', fontsize=12)
-    #     axs[1].vlines(x = intersection_point_emissions[0], ymin = 0, ymax = intersection_point_emissions[1], color = 'lightgrey', linestyles='dashed')
-    #     axs[1].hlines(y = intersection_point_emissions[1], xmin = 0, xmax = intersection_point_emissions[0], color = 'lightgrey', linestyles='dashed')
+    if intersection_point_emissions[0] != 0:
+        # axs[1].text(x = intersection_point_emissions[0] - 4, 
+        #             y = intersection_point_emissions[1] + 0.25, 
+        #             s = f'{round(intersection_point_emissions[1], 2)} tCO2', fontsize=12)
+        ax2.vlines(x = intersection_point_emissions[0], ymin = 0, ymax = intersection_point_emissions[1], color = 'lightgrey', linestyles='dashed')
+        ax2.hlines(y = intersection_point_emissions[1], xmin = 0, xmax = intersection_point_emissions[0], color = 'lightgrey', linestyles='dashed')
 
    
     #Cost Plot
@@ -269,4 +269,3 @@ with col2:
 #st.header('Check out these charts!')
 
 plot_cars(model_1=EV_dropdown, model_2=ICEV_dropdown, gas_price=gas_price_slider, kwh_price=electricity_slider, grid_emissions_option=grid_emissions_radio_buttons, miles_per_year=miles_input_box)
-
