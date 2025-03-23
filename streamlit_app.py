@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 import seaborn as sns
 import numpy as np
 
@@ -164,9 +165,14 @@ def plot_cars(model_1, model_2, gas_price, kwh_price, grid_emissions_option, mil
                 hue='model',
                 ax=ax1)
     
+    cost_formatter = ticker.FuncFormatter(lambda x, pos: f'${x:,.0f}')
+    ax1.yaxis.set_major_formatter(cost_formatter)
+    ax1.yaxis.set_minor_formatter(cost_formatter)
+
+
     #axs[0].set_title(f'Cost of Ownership')# for {model_1} and {model_2}', fontname='Sans Serif')
     ax1.set_xlabel('Years of Ownership', fontsize=28)
-    ax1.set_ylabel('Cost of Ownership ($)', fontsize=28)
+    ax1.set_ylabel('Cost of Ownership ($) \n', fontsize=28)
     ax1.set_ylim(bottom = 0)
     ax1.set_xlim(0, 20)
     ax1.set_xticks(range(0, 21, 2))
@@ -179,9 +185,9 @@ def plot_cars(model_1, model_2, gas_price, kwh_price, grid_emissions_option, mil
                 y='running_emissions', 
                 hue='model',
                 ax=ax2)
-    ax2.set_title(f'Emissions for {model_1} and {model_2}')
-    ax2.set_xlabel('Years of Ownership')
-    ax2.set_ylabel('Emissions (tCO2)')
+    #ax2.set_title(f'Emissions for {model_1} and {model_2}')
+    ax2.set_xlabel('Years of Ownership', fontsize=28)
+    ax2.set_ylabel('Emissions (tCO2) \n', fontsize=28)
     ax2.set_ylim(bottom = 0)
     ax2.set_ylim(0,140)
     ax2.set_xlim(0, 20)
@@ -269,5 +275,4 @@ with col2:
 #st.header('Check out these charts!')
 
 plot_cars(model_1=EV_dropdown, model_2=ICEV_dropdown, gas_price=gas_price_slider, kwh_price=electricity_slider, grid_emissions_option=grid_emissions_radio_buttons, miles_per_year=miles_input_box)
-
 
