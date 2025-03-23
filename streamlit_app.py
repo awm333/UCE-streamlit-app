@@ -1,10 +1,30 @@
 import streamlit as st
 
-st. set_page_config(layout="wide")
+st.set_page_config(page_title = 'Utah Clean Energy EV Tool',
+                   layout="wide",
+                   menu_items={
+                       'Get help': 'https://utahcleanenergy.org'})
+# Inject CSS to change tooltip background color (works for sidebar & main area)
+st.markdown(
+    """
+    <style>
+    /* Change background color and text color of tooltips */
+    div[data-testid="stTooltipContent"] {
+        background-color: #ffffff !important; /* Custom background */
+        color: black !important; /* Text color */
+        border-radius: 8px !important; /* Rounded corners */
+        padding: 8px 12px !important;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3) !important; /* Optional shadow */
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
+import matplotlib.patches as mpatches
 import seaborn as sns
 import numpy as np
 import altair as alt
@@ -91,12 +111,12 @@ def cost_intersection_point(df_EV, df_ICEV):
 def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_option=1, miles_per_year=11000, apply_tax_credit=False):
     #fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(20, 20))
 
-    fig1 = plt.figure(figsize=(20, 10))
+    fig1 = plt.figure(figsize=(30, 15))
     fig1.patch.set_linewidth(2)
     fig1.patch.set_edgecolor('black')
     ax1 = fig1.add_subplot(111)
 
-    fig2 = plt.figure(figsize=(20, 10))
+    fig2 = plt.figure(figsize=(20, 8))
     ax2 = fig2.add_subplot(111)
 
     EV_model_df = vehicles_df[vehicles_df['model'] == model_1]
@@ -140,68 +160,14 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     #union of the two dataframes
     plot_func_df = pd.concat([EV_model_df, ICEV_model_df])
 
-    if apply_tax_credit:
-        tax_credit_df = EV_model_df
-        tax_credit_df['running_cost_of_ownership'] = tax_credit_df['running_cost_of_ownership'] - 7500
-        tax_credit_df['model'] = 'EV with Tax Credit'
-        plot_func_df = pd.concat([tax_credit_df, plot_func_df])
-
-    #st.dataframe(plot_func_df)
-
-    #Interesection Point Annotations
-    if intersection_point_cost[0] != 0:
-        # axs[0].annotate('Breakeven by year ' + str(intersection_point_cost[0]), 
-        #                 xy= (intersection_point_cost[0], intersection_point_cost[1]), 
-        #                 xytext=(intersection_point_cost[0] - 6, intersection_point_cost[1] + 4000), 
-        #                 arrowprops=dict(facecolor='black', shrink=0.05))
-        # axs[0].text(x = intersection_point_cost[0] - 4, 
-        #             y = intersection_point_cost[1] + 2000, 
-        #             s = f'${round(intersection_point_cost[1], 2)}', fontsize=12)
-        ax1.vlines(x = intersection_point_cost[0], ymin = 0, ymax = intersection_point_cost[1], color = 'lightgrey', linestyles='dashed')
-        ax1.hlines(y = intersection_point_cost[1], xmin = 0, xmax = intersection_point_cost[0], color = 'lightgrey', linestyles='dashed')
-    
-    if intersection_point_emissions[0] != 0:
-        # axs[1].text(x = intersection_point_emissions[0] - 4, 
-        #             y = intersection_point_emissions[1] + 0.25, 
-        #             s = f'{round(intersection_point_emissions[1], 2)} tCO2', fontsize=12)
-        ax2.vlines(x = intersection_point_emissions[0], ymin = 0, ymax = intersection_point_emissions[1], color = 'lightgrey', linestyles='dashed')
-        ax2.hlines(y = intersection_point_emissions[1], xmin = 0, xmax = intersection_point_emissions[0], color = 'lightgrey', linestyles='dashed')
-
-   
-    #Cost Plot
-    #sns.set_style("white")
-    #sns.set_palette("muted")
-    plt.rcParams["font.family"] = "Helvetica"
-    plt.rcParams["font.size"] = 24
-    #axs[0].set_facecolor('#F2F0EA')
-    sns.lineplot(data=plot_func_df, 
-                x='years_of_ownership', 
-                y='running_cost_of_ownership', 
-                hue='model',
-                ax=ax1)
-    
-    cost_formatter = ticker.FuncFormatter(lambda x, pos: f'${x:,.0f}')
-    ax1.yaxis.set_major_formatter(cost_formatter)
-    ax1.yaxis.set_minor_formatter(cost_formatter)
-
-
-    #axs[0].set_title(f'Cost of Ownership')# for {model_1} and {model_2}', fontname='Sans Serif')
-    ax1.set_title('\n')
-    ax1.set_xlabel('\n Years of Ownership \n', fontsize=28)
-    ax1.set_ylabel('\n Cost of Ownership ($) \n', fontsize=28)
-    ax1.set_ylim(bottom = 0)
-    ax1.set_xlim(0, 20)
-    ax1.set_xticks(range(0, 21, 2))
-    ax1.lines[0].set_linewidth(3)
-    ax1.lines[1].set_linewidth(3)
-    ax1.spines['top'].set_visible(False)
-    ax1.spines['right'].set_visible(False)
+    color_mapping = {'Electricity': 'blue', 'Regular': 'orange'}
 
     #Emissions Plot
     sns.lineplot(data=plot_func_df, 
                 x='years_of_ownership', 
                 y='running_emissions', 
-                hue='model',
+                hue='fuelType',
+                palette=color_mapping,
                 ax=ax2)
     #ax2.set_title(f'Emissions for {model_1} and {model_2}')
     ax2.set_xlabel('\nYears of Ownership', fontsize=28)
@@ -212,7 +178,108 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     ax2.set_xticks(range(0, 21, 2))
     ax2.lines[0].set_linewidth(3)
     ax2.lines[1].set_linewidth(3)
+    ax2.legend_.remove()
+    legend_patches = [mpatches.Patch(color=color, 
+                                     label=plot_func_df.loc[plot_func_df['fuelType'] == label1, 'model'].iloc[0])
+                                    for label1, color in color_mapping.items()]
+    ax2.legend(handles=legend_patches, title="Model", fontsize=28, title_fontsize=32)
 
+    if apply_tax_credit:
+        tax_credit_df = EV_model_df
+        tax_credit_df['running_cost_of_ownership'] = tax_credit_df['running_cost_of_ownership'] - 7500
+        tax_credit_df['fuelType'] = '(w/ Tax Credit)'
+        plot_func_df.loc[plot_func_df['fuelType'] == 'Electricity', 'fuelType'] = '(w/o Tax Credit)'        
+        plot_func_df = pd.concat([plot_func_df, tax_credit_df])
+        color_mapping = {'(w/ Tax Credit)': 'blue', '(w/o Tax Credit)': 'grey', 'Regular': 'orange'}
+
+    ## Interesection Points ##
+    if intersection_point_cost[0] != 0:
+        # axs[0].annotate('Breakeven by year ' + str(intersection_point_cost[0]), 
+        #                 xy= (intersection_point_cost[0], intersection_point_cost[1]), 
+        #                 xytext=(intersection_point_cost[0] - 6, intersection_point_cost[1] + 4000), 
+        #                 arrowprops=dict(facecolor='black', shrink=0.05))
+        # axs[0].text(x = intersection_point_cost[0] - 4, 
+        #             y = intersection_point_cost[1] + 2000, 
+        #             s = f'${round(intersection_point_cost[1], 2)}', fontsize=12)
+        ax1.vlines(x = intersection_point_cost[0], 
+                   ymin = 0, 
+                   ymax = intersection_point_cost[1], 
+                   color = 'lightgrey', 
+                   #linestyles='dashed',
+                   linestyle=(0, (10, 4)) #dashed line
+                   )
+        ax1.hlines(y = intersection_point_cost[1], 
+                   xmin = 0, 
+                   xmax = intersection_point_cost[0], 
+                   color = 'lightgrey', 
+                   #linestyles='dashed',
+                   linestyle=(0, (10, 4))
+                   )
+
+    if intersection_point_emissions[0] != 0:
+        # axs[1].text(x = intersection_point_emissions[0] - 4, 
+        #             y = intersection_point_emissions[1] + 0.25, 
+        #             s = f'{round(intersection_point_emissions[1], 2)} tCO2', fontsize=12)
+        ax2.vlines(x = intersection_point_emissions[0], 
+                   ymin = 0, 
+                   ymax = intersection_point_emissions[1], 
+                   color = 'lightgrey', 
+                   #linestyles='dashed',
+                   linestyle=(0, (10, 4)) #dashed line
+                   )
+        ax2.hlines(y = intersection_point_emissions[1], 
+                   xmin = 0, 
+                   xmax = intersection_point_emissions[0], 
+                   color = 'lightgrey', 
+                   #linestyles='dashed',
+                   linestyle=(0, (10, 4))
+                   ) #dashed line
+
+   
+    ## Cost Plot ##
+    #sns.set_style("white")
+    #sns.set_palette("muted")
+    plt.rcParams["font.family"] = "Helvetica"
+    plt.rcParams["font.size"] = 24
+    #axs[0].set_facecolor('#F2F0EA')
+    sns.lineplot(data=plot_func_df, 
+                x='years_of_ownership', 
+                y='running_cost_of_ownership', 
+                hue='fuelType',
+                palette=color_mapping,
+                ax=ax1)
+    cost_formatter = ticker.FuncFormatter(lambda x, pos: f'${x:,.0f}')
+    ax1.yaxis.set_major_formatter(cost_formatter)
+    ax1.yaxis.set_minor_formatter(cost_formatter)
+    #axs[0].set_title(f'Cost of Ownership')# for {model_1} and {model_2}', fontname='Sans Serif')
+    ax1.set_title('\n')
+    ax1.set_xlabel('\n Years of Ownership \n', fontsize=32, fontweight='bold')
+    ax1.set_ylabel('\n Cost of Ownership ($) \n', fontsize=28)
+    ax1.set_ylim(bottom = 0)
+    ax1.set_xlim(0, 20)
+    ax1.set_xticks(range(0, 21, 2))
+    ax1.lines[0].set_linewidth(3)
+    ax1.lines[1].set_linewidth(3)
+    ax1.spines['top'].set_visible(False)
+    ax1.spines['right'].set_visible(False)
+    if apply_tax_credit:
+        ax1.lines[0].set_linewidth(1)
+        ax1.lines[2].set_linewidth(3)
+    ax1.legend_.remove()
+    legend_patches = [mpatches.Patch(color=color, 
+                                     label=plot_func_df.loc[plot_func_df['fuelType'] == label1, 'model'].iloc[0]
+                                     if not plot_func_df.loc[plot_func_df['fuelType'] == label1, 'model'].empty else label1)
+                                     for label1, color in color_mapping.items()]
+    if apply_tax_credit:
+        legend_patches = [mpatches.Patch(color=color, 
+                                         label=(plot_func_df.loc[plot_func_df['fuelType'] == label1, 'model'].iloc[0] + " " + label1)
+                                         if not plot_func_df.loc[plot_func_df['fuelType'] == label1, 'model'].empty else label1) 
+                                         for label1, color in color_mapping.items()]
+    ax1.legend(handles=legend_patches, title="Model", fontsize=28, title_fontsize=32)
+
+    # model_colors = {'EV': 'blue', 'ICEV': 'orange', 'EV with Tax Credit': 'grey'}
+    # legend_patches = [mpatches.Patch(color=color, label=label) for label, color in model_colors.items()]
+    # ax2.legend(handles=legend_patches, title="Model", fontsize=16, title_fontsize=18)
     
     #st.markdown('## Matplotlib Chart')
 
@@ -318,6 +385,61 @@ with st.sidebar:
         captions=["PacifiCorp's Forecasts", "Based on 2023 Actuals", "Hypothetical All-Coal Grid"],
         format_func=radio_button_output
         )
+        
+    
+    
+def old_columns_code():
+    plot_func_df = plot_func_df
+    # col1, col2 = st.columns(2)
+    # with col1:
+    #     EV_dropdown = st.selectbox(
+    #         label='Select EV',
+    #         options=vehicles_df[vehicles_df['fuelType'] == 'Electricity']['model'],
+    #         format_func=add_make_to_model
+    #     )
+
+    #     gas_price_slider = st.slider(
+    #         label='Gas Price ($/gallon):', 
+    #         min_value=2.00, 
+    #         max_value=5.00, 
+    #         value=3.15,
+    #         help='Here is why we made this choice',
+    #         label_visibility="visible")
+        
+    #     electricity_slider = st.slider(
+    #         label='Electricity Price ($/kWh):',
+    #         min_value=0.00, 
+    #         max_value=0.30, 
+    #         value=0.12,
+    #         help='Here is why we made this choice',
+    #         label_visibility="visible")
+
+    #     tax_credit_link = 'https://homes.rewiringamerica.org/federal-incentives/30d-new-ev-tax-incentive'
+    #     tax_credit_checkbox = st.checkbox(
+    #         label='Apply Full Federal Tax Credit',
+    #         help='Check this box to include the full, $7,500 Federal Tax Credit for EVs.  For more information, [click here](' + tax_credit_link + ').',
+    #         )
+
+    # with col2:
+    #     ICEV_dropdown = st.selectbox(
+    #         label = 'Select ICEV:',
+    #         options = vehicles_df[vehicles_df['fuelType'] == 'Regular']['model'],
+    #         format_func = add_make_to_model
+    #     )
+
+    #     grid_emissions_radio_buttons = st.radio(
+    #     label='Grid Emissions Options:', 
+    #     options=[1,2,3],
+    #     captions=["PacifiCorp's Forecasts", "Based on 2023 Actuals", "Hypothetical All-Coal Grid"],
+    #     format_func=radio_button_output
+    #     )
+        
+    #     miles_input_box = st.number_input(
+    #         label='Miles/Year',
+    #         min_value=0, 
+    #         max_value=20000, 
+    #         value=11000, 
+    #         step=500)
 
 #st.header('Check out these charts!')
 
