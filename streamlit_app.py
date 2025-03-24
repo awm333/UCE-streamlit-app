@@ -4,6 +4,7 @@ st.set_page_config(page_title = 'Utah Clean Energy EV Tool',
                    layout="wide",
                    menu_items={
                        'Get help': 'https://utahcleanenergy.org'})
+
 # Inject CSS to change tooltip background color (works for sidebar & main area)
 st.markdown(
     """
@@ -32,7 +33,7 @@ import altair as alt
 vehicles_df = pd.read_csv('limited_vehicles.csv')
 grid_emissions_df = pd.read_csv('grid_emissions_forecast.csv')
 
-def emissions_intersection_point(df_EV, df_ICEV):
+def emissions_intersection_point_years(df_EV, df_ICEV):
     #Takes two dataframes, one for EV and one for ICEV, and returns the year and emissions at which the two intersect
     #Returns the year AFTER the intersction point
     #If no intersection point is found, returns (0,0)
@@ -70,7 +71,45 @@ def emissions_intersection_point(df_EV, df_ICEV):
     return_intersection_point = (return_yr, return_emissions)
     return return_intersection_point
 
-def cost_intersection_point(df_EV, df_ICEV):
+def emissions_intersection_point_months(df_EV, df_ICEV):
+    #Takes two dataframes, one for EV and one for ICEV, and returns the month and emissions at which the two intersect
+    #Returns the month AFTER the intersction point
+    #If no intersection point is found, returns (0,0)
+    df_EV_comp = df_EV[['cumulative_months', 'running_emissions']]
+    df_EV_comp.rename(columns={'running_emissions': 'EV_running_emissions'}, inplace=True)
+
+    df_ICEV_comp = df_ICEV[['cumulative_months', 'running_emissions']]
+    df_ICEV_comp.rename(columns={'running_emissions': 'ICEV_running_emissions'}, inplace=True)
+
+    df_comp = pd.merge(df_EV_comp, df_ICEV_comp, on='cumulative_months', how='outer')
+    df_comp['diff'] = df_comp['EV_running_emissions'] - df_comp['ICEV_running_emissions']
+    df_comp['diff_sign'] = np.sign(df_comp['diff'])
+    df_comp['ly_diff_sign'] = df_comp['diff_sign'].shift(1)
+    df_comp['intersection_point'] = np.where((df_comp['diff_sign'] != df_comp['ly_diff_sign']) & (df_comp['cumulative_months'] > 1), 
+                                            1, 
+                                            0)
+    #if there is an exact match, set the intersection point to 2
+    df_comp['intersection_point'] = np.where((df_comp['diff_sign'] == 0),
+                                            2,
+                                            df_comp['intersection_point'])
+
+    df_return = df_comp[df_comp['intersection_point'] > 0][['cumulative_months', 'EV_running_emissions', 'ICEV_running_emissions']]
+    #select row with max intersection point
+    df_return = df_comp[df_comp['intersection_point'] == df_comp['intersection_point'].max()]
+    try:
+            return_mth = df_return['cumulative_months'].values[0]
+            return_EV_emissions = df_return['EV_running_emissions'].values[0]
+            return_ICEV_emissions = df_return['ICEV_running_emissions'].values[0]
+    except:
+            return_mth = 0
+            return_EV_emissions = 0
+            return_ICEV_emissions = 0
+    return_emissions = np.average([return_EV_emissions, return_ICEV_emissions])
+
+    return_intersection_point = (return_mth, return_emissions)
+    return return_intersection_point
+
+def cost_intersection_point_years(df_EV, df_ICEV):
     #Takes two dataframes, one for EV and one for ICEV, and returns the year and emissions at which the two intersect
     #Returns the year AFTER the intersction point
     #If no intersection point is found, returns (0,0)
@@ -108,6 +147,44 @@ def cost_intersection_point(df_EV, df_ICEV):
     return_intersection_point = (return_yr, return_cost)
     return return_intersection_point
 
+def cost_intersection_point_months(df_EV, df_ICEV):
+    #Takes two dataframes, one for EV and one for ICEV, and returns the year and emissions at which the two intersect
+    #Returns the year AFTER the intersction point
+    #If no intersection point is found, returns (0,0)
+    df_EV_comp = df_EV[['cumulative_months', 'running_cost_of_ownership']]
+    df_EV_comp.rename(columns={'running_cost_of_ownership': 'EV_running_cost'}, inplace=True)
+
+    df_ICEV_comp = df_ICEV[['cumulative_months', 'running_cost_of_ownership']]
+    df_ICEV_comp.rename(columns={'running_cost_of_ownership': 'ICEV_running_cost'}, inplace=True)
+
+    df_comp = pd.merge(df_EV_comp, df_ICEV_comp, on='cumulative_months', how='outer')
+    df_comp['diff'] = df_comp['EV_running_cost'] - df_comp['ICEV_running_cost']
+    df_comp['diff_sign'] = np.sign(df_comp['diff'])
+    df_comp['ly_diff_sign'] = df_comp['diff_sign'].shift(1)
+    df_comp['intersection_point'] = np.where((df_comp['diff_sign'] != df_comp['ly_diff_sign']) & (df_comp['cumulative_months'] > 1), 
+                                            1, 
+                                            0)
+    #if there is an exact match, set the intersection point to 2
+    df_comp['intersection_point'] = np.where((df_comp['diff_sign'] == 0),
+                                            2,
+                                            df_comp['intersection_point'])
+
+    df_return = df_comp[df_comp['intersection_point'] > 0][['cumulative_months', 'EV_running_cost', 'ICEV_running_cost']]
+    #select row with max intersection point
+    df_return = df_comp[df_comp['intersection_point'] == df_comp['intersection_point'].max()]
+    try:
+            return_mth = df_return['cumulative_months'].values[0]
+            return_EV_cost = df_return['EV_running_cost'].values[0]
+            return_ICEV_cost = df_return['ICEV_running_cost'].values[0]
+    except:
+            return_mth = 0
+            return_EV_cost = 0
+            return_ICEV_cost = 0
+    return_cost = np.average([return_EV_cost, return_ICEV_cost])
+
+    return_intersection_point = (return_mth, return_cost)
+    return return_intersection_point
+
 def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_option=1, miles_per_year=11000, apply_tax_credit=False):
     #fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(20, 20))
 
@@ -121,41 +198,85 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
 
     EV_model_df = vehicles_df[vehicles_df['model'] == model_1]
     ICEV_model_df = vehicles_df[vehicles_df['model'] == model_2]
-    
+
     years_of_ownership_df = pd.DataFrame({'years_of_ownership': range(0,21)})
-    EV_model_df = pd.merge(EV_model_df, years_of_ownership_df, how='cross')
-    ICEV_model_df = pd.merge(ICEV_model_df, years_of_ownership_df, how='cross')
+    months_of_ownership_df = pd.DataFrame({'months_of_ownership': range(1, 13)})
+    time_of_ownership_df = pd.merge(years_of_ownership_df, months_of_ownership_df, how='cross')
+    time_of_ownership_df['cumulative_months'] = time_of_ownership_df['months_of_ownership'] + (time_of_ownership_df['years_of_ownership'] * 12)
+    new_row = pd.DataFrame([[0, 0, 0]], columns=time_of_ownership_df.columns)
+    time_of_ownership_df = pd.concat([new_row, time_of_ownership_df], ignore_index=True)
+    time_of_ownership_df.drop(columns=['months_of_ownership'], inplace=True)
+    
+    # EV_model_df = pd.merge(EV_model_df, years_of_ownership_df, how='cross')
+    # ICEV_model_df = pd.merge(ICEV_model_df, years_of_ownership_df, how='cross')
+
+    EV_model_df = pd.merge(EV_model_df, time_of_ownership_df, how='cross')
+    ICEV_model_df = pd.merge(ICEV_model_df, time_of_ownership_df, how='cross')
+
+    
 
     grid_emissions_df['merge_year'] = grid_emissions_df['forecast_year'] - 2023
+
     EV_model_df = pd.merge(EV_model_df, grid_emissions_df, how='left', left_on=['years_of_ownership'], right_on=['merge_year'])
     ICEV_model_df = pd.merge(ICEV_model_df, grid_emissions_df, how='left', left_on=['years_of_ownership'], right_on=['merge_year'])
 
     #calculate running cost of ownership
-    EV_model_df['running_cost_of_ownership'] = EV_model_df['MSRP'] + (1013 * 0.66 * EV_model_df['years_of_ownership']) + (miles_per_year * EV_model_df['combE'] / 100 * kwh_price * EV_model_df['years_of_ownership'])
-    ICEV_model_df['running_cost_of_ownership'] = ICEV_model_df['MSRP'] + (1013 * ICEV_model_df['years_of_ownership']) + (miles_per_year / ICEV_model_df['comb08'] * gas_price * ICEV_model_df['years_of_ownership'])
+    # EV_model_df['running_cost_of_ownership'] = EV_model_df['MSRP'] + (1013 * 0.66 * EV_model_df['years_of_ownership']) + (miles_per_year * EV_model_df['combE'] / 100 * kwh_price * EV_model_df['years_of_ownership'])
+    # ICEV_model_df['running_cost_of_ownership'] = ICEV_model_df['MSRP'] + (1013 * ICEV_model_df['years_of_ownership']) + (miles_per_year / ICEV_model_df['comb08'] * gas_price * ICEV_model_df['years_of_ownership'])
     
+    EV_model_df['running_cost_of_ownership'] = EV_model_df['MSRP'] + (1013 * 0.66 * EV_model_df['cumulative_months']/12) + (miles_per_year * EV_model_df['combE'] / 100 * kwh_price * EV_model_df['cumulative_months']/12)
+    ICEV_model_df['running_cost_of_ownership'] = ICEV_model_df['MSRP'] + (1013 * ICEV_model_df['cumulative_months']/12) + (miles_per_year / ICEV_model_df['comb08'] * gas_price * ICEV_model_df['cumulative_months']/12)
+
+
     #calculate running emissions
-    EV_model_df['ty_emissions'] = np.where(EV_model_df['years_of_ownership'] != 0,
-                                           EV_model_df['emissions_tCO2MWh'] / 1000 * EV_model_df['combE'] / 100 * miles_per_year,
+    # EV_model_df['ty_emissions'] = np.where(EV_model_df['years_of_ownership'] != 0,
+    #                                        EV_model_df['emissions_tCO2MWh'] / 1000 * EV_model_df['combE'] / 100 * miles_per_year,
+    #                                        0)
+    # EV_model_df['starting_emissions'] = np.where(EV_model_df['years_of_ownership'] == 0, 
+    #                                              EV_model_df['Manufacture_Emissions_tCO2'], 
+    #                                              0)
+    
+    EV_model_df['ty_emissions'] = np.where(EV_model_df['cumulative_months'] != 0,
+                                           EV_model_df['emissions_tCO2MWh'] / 1000 * EV_model_df['combE'] / 100 * miles_per_year / 12,
                                            0)
-    EV_model_df['starting_emissions'] = np.where(EV_model_df['years_of_ownership'] == 0, 
+    EV_model_df['starting_emissions'] = np.where(EV_model_df['cumulative_months'] == 0, 
                                                  EV_model_df['Manufacture_Emissions_tCO2'], 
                                                  0)
+
+    # if grid_emissions_option == 1:
+    #     EV_model_df['ty_plus'] = EV_model_df['ty_emissions'] + EV_model_df['starting_emissions']
+    #     EV_model_df['running_emissions'] = EV_model_df['ty_plus'].cumsum()
+    # elif grid_emissions_option == 2:
+    #     EV_model_df['running_emissions'] = EV_model_df['Manufacture_Emissions_tCO2'] + ((0.532954 / 1000 * EV_model_df['combE'] / 100 * miles_per_year * EV_model_df['years_of_ownership']))
+    #     #'combE' = kWh/100 miles, 0.532954 tCO2/MWh (from Logan)
+    # elif grid_emissions_option == 3:
+    #     EV_model_df['running_emissions'] = EV_model_df['Manufacture_Emissions_tCO2'] + ((1.047798 / 1000 * EV_model_df['combE'] / 100 * miles_per_year * EV_model_df['years_of_ownership']))
+    #     #'combE' = kWh/100 miles, 1.047798 tCO2/MWh (from EIA 2.31 lbs CO2/kWh generated from Coal)
+
+    # ICEV_model_df['running_emissions'] = ICEV_model_df['Manufacture_Emissions_tCO2'] + (8887 / ICEV_model_df['comb08'] * miles_per_year * ICEV_model_df['years_of_ownership']/1000/1000)
+    #                                               #8,887 gCO2/gallon
+
     if grid_emissions_option == 1:
         EV_model_df['ty_plus'] = EV_model_df['ty_emissions'] + EV_model_df['starting_emissions']
         EV_model_df['running_emissions'] = EV_model_df['ty_plus'].cumsum()
     elif grid_emissions_option == 2:
-        EV_model_df['running_emissions'] = EV_model_df['Manufacture_Emissions_tCO2'] + ((0.532954 / 1000 * EV_model_df['combE'] / 100 * miles_per_year * EV_model_df['years_of_ownership']))
+        EV_model_df['running_emissions'] = EV_model_df['Manufacture_Emissions_tCO2'] + ((0.532954 / 1000 * EV_model_df['combE'] / 100 * miles_per_year * EV_model_df['cumulative_months']/12))
         #'combE' = kWh/100 miles, 0.532954 tCO2/MWh (from Logan)
     elif grid_emissions_option == 3:
-        EV_model_df['running_emissions'] = EV_model_df['Manufacture_Emissions_tCO2'] + ((1.047798 / 1000 * EV_model_df['combE'] / 100 * miles_per_year * EV_model_df['years_of_ownership']))
+        EV_model_df['running_emissions'] = EV_model_df['Manufacture_Emissions_tCO2'] + ((1.047798 / 1000 * EV_model_df['combE'] / 100 * miles_per_year * EV_model_df['cumulative_months']/12))
         #'combE' = kWh/100 miles, 1.047798 tCO2/MWh (from EIA 2.31 lbs CO2/kWh generated from Coal)
 
-    ICEV_model_df['running_emissions'] = ICEV_model_df['Manufacture_Emissions_tCO2'] + (8887 / ICEV_model_df['comb08'] * miles_per_year * ICEV_model_df['years_of_ownership']/1000/1000)
+    # ICEV_model_df['running_emissions'] = ICEV_model_df['Manufacture_Emissions_tCO2'] + (8887 / ICEV_model_df['comb08'] * miles_per_year * ICEV_model_df['years_of_ownership']/1000/1000)
+    #                                               #8,887 gCO2/gallon
+
+    ICEV_model_df['running_emissions'] = ICEV_model_df['Manufacture_Emissions_tCO2'] + (8887 / ICEV_model_df['comb08'] * miles_per_year * ICEV_model_df['cumulative_months']/12/1000/1000)
                                                   #8,887 gCO2/gallon
     
-    intersection_point_emissions = emissions_intersection_point(EV_model_df, ICEV_model_df)
-    intersection_point_cost = cost_intersection_point(EV_model_df, ICEV_model_df)
+    # intersection_point_emissions = emissions_intersection_point_years(EV_model_df, ICEV_model_df)
+    # intersection_point_cost = cost_intersection_point_years(EV_model_df, ICEV_model_df)
+
+    intersection_point_emissions = emissions_intersection_point_months(EV_model_df, ICEV_model_df)
+    intersection_point_cost = cost_intersection_point_months(EV_model_df, ICEV_model_df)
     
     #union of the two dataframes
     plot_func_df = pd.concat([EV_model_df, ICEV_model_df])
@@ -163,8 +284,15 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     color_mapping = {'Electricity': 'blue', 'Regular': 'orange'}
 
     #Emissions Plot
+    # sns.lineplot(data=plot_func_df, 
+    #             x='years_of_ownership', 
+    #             y='running_emissions', 
+    #             hue='fuelType',
+    #             palette=color_mapping,
+    #             ax=ax2)
+    
     sns.lineplot(data=plot_func_df, 
-                x='years_of_ownership', 
+                x='cumulative_months', 
                 y='running_emissions', 
                 hue='fuelType',
                 palette=color_mapping,
@@ -174,8 +302,10 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     ax2.set_ylabel('Emissions (tCO2) \n', fontsize=28)
     ax2.set_ylim(bottom = 0)
     ax2.set_ylim(0,140)
-    ax2.set_xlim(0, 20)
-    ax2.set_xticks(range(0, 21, 2))
+    #ax2.set_xlim(0, 20)
+    ax2.set_xlim(0, 240)
+    # ax2.set_xticks(range(0, 21, 2))
+    ax2.set_xticks(range(0, 241, 12))
     ax2.lines[0].set_linewidth(3)
     ax2.lines[1].set_linewidth(3)
     ax2.legend_.remove()
@@ -237,13 +367,16 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
 
    
     ## Cost Plot ##
-    #sns.set_style("white")
-    #sns.set_palette("muted")
     plt.rcParams["font.family"] = "Helvetica"
     plt.rcParams["font.size"] = 24
-    #axs[0].set_facecolor('#F2F0EA')
+    # sns.lineplot(data=plot_func_df, 
+    #             x='years_of_ownership', 
+    #             y='running_cost_of_ownership', 
+    #             hue='fuelType',
+    #             palette=color_mapping,
+    #             ax=ax1)
     sns.lineplot(data=plot_func_df, 
-                x='years_of_ownership', 
+                x='cumulative_months', 
                 y='running_cost_of_ownership', 
                 hue='fuelType',
                 palette=color_mapping,
@@ -253,11 +386,14 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     ax1.yaxis.set_minor_formatter(cost_formatter)
     #axs[0].set_title(f'Cost of Ownership')# for {model_1} and {model_2}', fontname='Sans Serif')
     ax1.set_title('\n')
-    ax1.set_xlabel('\n Years of Ownership \n', fontsize=32, fontweight='bold')
+    # ax1.set_xlabel('\n Years of Ownership \n', fontsize=32, fontweight='bold')
+    ax1.set_xlabel('\n Months of Ownership \n', fontsize=32, fontweight='bold')
     ax1.set_ylabel('\n Cost of Ownership ($) \n', fontsize=28)
     ax1.set_ylim(bottom = 0)
-    ax1.set_xlim(0, 20)
-    ax1.set_xticks(range(0, 21, 2))
+    # ax1.set_xlim(0, 20)
+    ax1.set_xlim(0, 240)
+    # ax1.set_xticks(range(0, 21, 2))
+    ax1.set_xticks(range(0, 241, 12))
     ax1.lines[0].set_linewidth(3)
     ax1.lines[1].set_linewidth(3)
     ax1.spines['top'].set_visible(False)
@@ -289,32 +425,34 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     st.markdown("<h2 style='text-align: center;'>Emissions</h2>", unsafe_allow_html=True)
     st.pyplot(fig2)
     # st.metric("Breakeven Year", intersection_point_cost[0], delta="2") ## could be used for showing the dashboarding metrics that Kelbe wants
-    st.markdown('## Altair Chart')
-
-    line_chart = alt.Chart(plot_func_df).mark_line().encode(
-         x='years_of_ownership:O',  # O makes it an ordinal scale
-         y='running_cost_of_ownership:Q',  # Q makes it a quantitative scale
-         color='model:N'  # N makes it a nominal scale
-         ).properties(
-              title="Altair Cost of Ownership"
-              )
     
-    vline = alt.Chart(pd.DataFrame({'x': [intersection_point_cost[0]], 'y_start': [0], 'y_end':[intersection_point_cost[1]]})).mark_rule(color='red').encode(
-         x='x:O',
-         y='y_start:Q',
-         y2='y_end:Q'
-         )
+    ## CHART PACKAGE EXPERIMENTS ##
+    # st.markdown('## Altair Chart')
 
-    chart = line_chart + vline
+    # line_chart = alt.Chart(plot_func_df).mark_line().encode(
+    #      x='years_of_ownership:O',  # O makes it an ordinal scale
+    #      y='running_cost_of_ownership:Q',  # Q makes it a quantitative scale
+    #      color='model:N'  # N makes it a nominal scale
+    #      ).properties(
+    #           title="Altair Cost of Ownership"
+    #           )
+    
+    # vline = alt.Chart(pd.DataFrame({'x': [intersection_point_cost[0]], 'y_start': [0], 'y_end':[intersection_point_cost[1]]})).mark_rule(color='red').encode(
+    #      x='x:O',
+    #      y='y_start:Q',
+    #      y2='y_end:Q'
+    #      )
 
-    st.altair_chart(chart, use_container_width=True)
+    # chart = line_chart + vline
 
-    st.markdown('## Streamlit Chart')
+    # st.altair_chart(chart, use_container_width=True)
 
-    st.line_chart(data = plot_func_df,
-                  x = 'years_of_ownership',
-                  y = 'running_cost_of_ownership',
-                  color = 'model')
+    # st.markdown('## Streamlit Chart')
+
+    # st.line_chart(data = plot_func_df,
+    #               x = 'years_of_ownership',
+    #               y = 'running_cost_of_ownership',
+    #               color = 'model')
 
 def add_make_to_model(model):
     make = vehicles_df[vehicles_df['model'] == model]['make'].values[0]
