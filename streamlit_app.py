@@ -281,7 +281,9 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     #union of the two dataframes
     plot_func_df = pd.concat([EV_model_df, ICEV_model_df])
 
-    color_mapping = {'Electricity': 'blue', 'Regular': 'orange'}
+    UCE_blue = '#016495'
+    UCE_red = '#D84829'
+    color_mapping = {'Electricity': f'{UCE_blue}', 'Regular': f'{UCE_red}'}
 
 
     ### Emissions Plot ###
@@ -316,7 +318,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
         tax_credit_EV_df['fuelType'] = '(w/ Tax Credit)'
         plot_func_df.loc[plot_func_df['fuelType'] == 'Electricity', 'fuelType'] = '(w/o Tax Credit)'        
         plot_func_df = pd.concat([plot_func_df, tax_credit_EV_df])
-        color_mapping = {'(w/ Tax Credit)': 'blue', '(w/o Tax Credit)': 'grey', 'Regular': 'orange'}
+        color_mapping = {'(w/ Tax Credit)': f'{UCE_blue}', '(w/o Tax Credit)': 'grey', 'Regular': f'{UCE_red}'}
         intersection_point_cost = cost_intersection_point_months(tax_credit_EV_df, ICEV_model_df)
 
 
