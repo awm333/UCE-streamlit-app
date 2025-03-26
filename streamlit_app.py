@@ -29,15 +29,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import matplotlib.patches as mpatches
-import matplotlib.font_manager as fm
 import seaborn as sns
 import numpy as np
 import altair as alt
-
-
-# # Add font
-# fe = fm.FontEntry(fname='Montserrat-VariableFont_wght.ttf', name='Montserrat')
-# fm.fontManager.ttflist.insert(0, fe)
 
 vehicles_df = pd.read_csv('limited_vehicles.csv')
 grid_emissions_df = pd.read_csv('grid_emissions_forecast.csv')
@@ -207,8 +201,6 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     fig2.patch.set_edgecolor('black')
     ax2 = fig2.add_subplot(111)
 
-    # plt.rcParams['font.family'] = 'Montserrat'
-
     EV_model_df = vehicles_df[vehicles_df['model'] == model_1]
     ICEV_model_df = vehicles_df[vehicles_df['model'] == model_2]
 
@@ -313,6 +305,11 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     xtick_positions = range(0, 241, 12)
     ax2.set_xticks(xtick_positions)
     ax2.set_xticklabels([f"{m//12}" for m in xtick_positions])
+    ax2.tick_params(axis='x', colors='black')
+    ax2.tick_params(axis='y', colors='black')
+    for label in ax2.get_xticklabels() + ax2.get_yticklabels():
+        #label.set_fontweight("bold")
+        label.set_fontsize(30)
     ax2.spines['top'].set_visible(False)
     ax2.spines['right'].set_visible(False)
     ax2.lines[0].set_linewidth(3)
@@ -395,6 +392,11 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     xtick_positions = range(0, 241, 12)
     ax1.set_xticks(xtick_positions)
     ax1.set_xticklabels([f"{m//12}" for m in xtick_positions])
+    ax1.tick_params(axis='x', colors='black')
+    ax1.tick_params(axis='y', colors='black')
+    for label in ax1.get_xticklabels() + ax1.get_yticklabels():
+        #label.set_fontweight("bold")
+        label.set_fontsize(30)
     ax1.spines['top'].set_visible(False)
     ax1.spines['right'].set_visible(False)
     ax1.lines[0].set_linewidth(3)
@@ -471,7 +473,7 @@ def radio_button_output(grid_emissions_option):
 
 ### Web App UI ###
 
-st.title('EV vs ICEV Cost and Emissions Calculator')
+st.title('Utah Clean Energy EV vs ICEV Cost and Emissions Calculator')
 
 st.write('Created By Adrian Martino')
 
