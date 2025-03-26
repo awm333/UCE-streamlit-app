@@ -47,17 +47,17 @@ def emissions_intersection_point_years(df_EV, df_ICEV):
     df_comp['diff'] = df_comp['EV_running_emissions'] - df_comp['ICEV_running_emissions']
     df_comp['diff_sign'] = np.sign(df_comp['diff'])
     df_comp['ly_diff_sign'] = df_comp['diff_sign'].shift(1)
-    df_comp['intersection_point'] = np.where((df_comp['diff_sign'] != df_comp['ly_diff_sign']) & (df_comp['years_of_ownership'] > 1), 
+    df_comp['is_intersection_point'] = np.where((df_comp['diff_sign'] != df_comp['ly_diff_sign']) & (df_comp['years_of_ownership'] > 1), 
                                             1, 
                                             0)
     #if there is an exact match, set the intersection point to 2
-    df_comp['intersection_point'] = np.where((df_comp['diff_sign'] == 0),
+    df_comp['is_intersection_point'] = np.where((df_comp['diff_sign'] == 0),
                                             2,
-                                            df_comp['intersection_point'])
+                                            df_comp['is_intersection_point'])
 
-    df_return = df_comp[df_comp['intersection_point'] > 0][['years_of_ownership', 'EV_running_emissions', 'ICEV_running_emissions']]
+    df_return = df_comp[df_comp['is_intersection_point'] > 0][['years_of_ownership', 'EV_running_emissions', 'ICEV_running_emissions']]
     #select row with max intersection point
-    df_return = df_comp[df_comp['intersection_point'] == df_comp['intersection_point'].max()]
+    df_return = df_comp[df_comp['is_intersection_point'] == df_comp['is_intersection_point'].max()]
     try:
             return_yr = df_return['years_of_ownership'].values[0]
             return_EV_emissions = df_return['EV_running_emissions'].values[0]
@@ -85,17 +85,17 @@ def emissions_intersection_point_months(df_EV, df_ICEV):
     df_comp['diff'] = df_comp['EV_running_emissions'] - df_comp['ICEV_running_emissions']
     df_comp['diff_sign'] = np.sign(df_comp['diff'])
     df_comp['ly_diff_sign'] = df_comp['diff_sign'].shift(1)
-    df_comp['intersection_point'] = np.where((df_comp['diff_sign'] != df_comp['ly_diff_sign']) & (df_comp['cumulative_months'] > 1), 
+    df_comp['is_intersection_point'] = np.where((df_comp['diff_sign'] != df_comp['ly_diff_sign']) & (df_comp['cumulative_months'] > 1), 
                                             1, 
                                             0)
     #if there is an exact match, set the intersection point to 2
-    df_comp['intersection_point'] = np.where((df_comp['diff_sign'] == 0),
+    df_comp['is_intersection_point'] = np.where((df_comp['diff_sign'] == 0),
                                             2,
-                                            df_comp['intersection_point'])
+                                            df_comp['is_intersection_point'])
 
-    df_return = df_comp[df_comp['intersection_point'] > 0][['cumulative_months', 'EV_running_emissions', 'ICEV_running_emissions']]
+    df_return = df_comp[df_comp['is_intersection_point'] > 0][['cumulative_months', 'EV_running_emissions', 'ICEV_running_emissions']]
     #select row with max intersection point
-    df_return = df_comp[df_comp['intersection_point'] == df_comp['intersection_point'].max()]
+    df_return = df_comp[df_comp['is_intersection_point'] == df_comp['is_intersection_point'].max()]
     try:
             return_mth = df_return['cumulative_months'].values[0]
             return_EV_emissions = df_return['EV_running_emissions'].values[0]
@@ -123,17 +123,17 @@ def cost_intersection_point_years(df_EV, df_ICEV):
     df_comp['diff'] = df_comp['EV_running_cost'] - df_comp['ICEV_running_cost']
     df_comp['diff_sign'] = np.sign(df_comp['diff'])
     df_comp['ly_diff_sign'] = df_comp['diff_sign'].shift(1)
-    df_comp['intersection_point'] = np.where((df_comp['diff_sign'] != df_comp['ly_diff_sign']) & (df_comp['years_of_ownership'] > 1), 
+    df_comp['is_intersection_point'] = np.where((df_comp['diff_sign'] != df_comp['ly_diff_sign']) & (df_comp['years_of_ownership'] > 1), 
                                             1, 
                                             0)
     #if there is an exact match, set the intersection point to 2
-    df_comp['intersection_point'] = np.where((df_comp['diff_sign'] == 0),
+    df_comp['is_intersection_point'] = np.where((df_comp['diff_sign'] == 0),
                                             2,
-                                            df_comp['intersection_point'])
+                                            df_comp['is_intersection_point'])
 
-    df_return = df_comp[df_comp['intersection_point'] > 0][['years_of_ownership', 'EV_running_cost', 'ICEV_running_cost']]
+    df_return = df_comp[df_comp['is_intersection_point'] > 0][['years_of_ownership', 'EV_running_cost', 'ICEV_running_cost']]
     #select row with max intersection point
-    df_return = df_comp[df_comp['intersection_point'] == df_comp['intersection_point'].max()]
+    df_return = df_comp[df_comp['is_intersection_point'] == df_comp['is_intersection_point'].max()]
     try:
             return_yr = df_return['years_of_ownership'].values[0]
             return_EV_cost = df_return['EV_running_cost'].values[0]
@@ -161,17 +161,17 @@ def cost_intersection_point_months(df_EV, df_ICEV):
     df_comp['diff'] = df_comp['EV_running_cost'] - df_comp['ICEV_running_cost']
     df_comp['diff_sign'] = np.sign(df_comp['diff'])
     df_comp['ly_diff_sign'] = df_comp['diff_sign'].shift(1)
-    df_comp['intersection_point'] = np.where((df_comp['diff_sign'] != df_comp['ly_diff_sign']) & (df_comp['cumulative_months'] > 1), 
+    df_comp['is_intersection_point'] = np.where((df_comp['diff_sign'] != df_comp['ly_diff_sign']) & (df_comp['cumulative_months'] > 1), 
                                             1, 
                                             0)
     #if there is an exact match, set the intersection point to 2
-    df_comp['intersection_point'] = np.where((df_comp['diff_sign'] == 0),
+    df_comp['is_intersection_point'] = np.where((df_comp['diff_sign'] == 0),
                                             2,
-                                            df_comp['intersection_point'])
+                                            df_comp['is_intersection_point'])
 
-    df_return = df_comp[df_comp['intersection_point'] > 0][['cumulative_months', 'EV_running_cost', 'ICEV_running_cost']]
+    df_return = df_comp[df_comp['is_intersection_point'] > 0][['cumulative_months', 'EV_running_cost', 'ICEV_running_cost']]
     #select row with max intersection point
-    df_return = df_comp[df_comp['intersection_point'] == df_comp['intersection_point'].max()]
+    df_return = df_comp[df_comp['is_intersection_point'] == df_comp['is_intersection_point'].max()]
     try:
             return_mth = df_return['cumulative_months'].values[0]
             return_EV_cost = df_return['EV_running_cost'].values[0]
@@ -193,7 +193,9 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     fig1.patch.set_edgecolor('black')
     ax1 = fig1.add_subplot(111)
 
-    fig2 = plt.figure(figsize=(20, 8))
+    fig2 = plt.figure(figsize=(30, 15))
+    fig2.patch.set_linewidth(2)
+    fig2.patch.set_edgecolor('black')
     ax2 = fig2.add_subplot(111)
 
     EV_model_df = vehicles_df[vehicles_df['model'] == model_1]
@@ -212,8 +214,6 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
 
     EV_model_df = pd.merge(EV_model_df, time_of_ownership_df, how='cross')
     ICEV_model_df = pd.merge(ICEV_model_df, time_of_ownership_df, how='cross')
-
-    
 
     grid_emissions_df['merge_year'] = grid_emissions_df['forecast_year'] - 2023
 
@@ -283,30 +283,25 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
 
     color_mapping = {'Electricity': 'blue', 'Regular': 'orange'}
 
-    #Emissions Plot
-    # sns.lineplot(data=plot_func_df, 
-    #             x='years_of_ownership', 
-    #             y='running_emissions', 
-    #             hue='fuelType',
-    #             palette=color_mapping,
-    #             ax=ax2)
-    
+
+    ### Emissions Plot ###
+
     sns.lineplot(data=plot_func_df, 
                 x='cumulative_months', 
                 y='running_emissions', 
                 hue='fuelType',
                 palette=color_mapping,
                 ax=ax2)
-    #ax2.set_title(f'Emissions for {model_1} and {model_2}')
-    ax2.set_xlabel('\nYears of Ownership', fontsize=28)
+    ax2.set_title('\n')
+    ax2.set_xlabel('\n Years of Ownership \n', fontsize=32, fontweight='bold')
     ax2.set_ylabel('Emissions (tCO2) \n', fontsize=28)
-    ax2.set_ylim(bottom = 0)
     ax2.set_ylim(0,140)
-    #ax2.set_xlim(0, 20)
     ax2.set_xlim(0, 240)
     xtick_positions = range(0, 241, 12)
     ax2.set_xticks(xtick_positions)
     ax2.set_xticklabels([f"{m//12}" for m in xtick_positions])
+    ax2.spines['top'].set_visible(False)
+    ax2.spines['right'].set_visible(False)
     ax2.lines[0].set_linewidth(3)
     ax2.lines[1].set_linewidth(3)
     ax2.legend_.remove()
@@ -316,14 +311,17 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     ax2.legend(handles=legend_patches, title="Model", fontsize=28, title_fontsize=32)
 
     if apply_tax_credit:
-        tax_credit_df = EV_model_df
-        tax_credit_df['running_cost_of_ownership'] = tax_credit_df['running_cost_of_ownership'] - 7500
-        tax_credit_df['fuelType'] = '(w/ Tax Credit)'
+        tax_credit_EV_df = EV_model_df
+        tax_credit_EV_df['running_cost_of_ownership'] = tax_credit_EV_df['running_cost_of_ownership'] - 7500
+        tax_credit_EV_df['fuelType'] = '(w/ Tax Credit)'
         plot_func_df.loc[plot_func_df['fuelType'] == 'Electricity', 'fuelType'] = '(w/o Tax Credit)'        
-        plot_func_df = pd.concat([plot_func_df, tax_credit_df])
+        plot_func_df = pd.concat([plot_func_df, tax_credit_EV_df])
         color_mapping = {'(w/ Tax Credit)': 'blue', '(w/o Tax Credit)': 'grey', 'Regular': 'orange'}
+        intersection_point_cost = cost_intersection_point_months(tax_credit_EV_df, ICEV_model_df)
 
-    ## Interesection Points ##
+
+    ### Interesection Points ###
+
     if intersection_point_cost[0] != 0:
         # axs[0].annotate('Breakeven by year ' + str(intersection_point_cost[0]), 
         #                 xy= (intersection_point_cost[0], intersection_point_cost[1]), 
@@ -355,27 +353,18 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
                    ymin = 0, 
                    ymax = intersection_point_emissions[1], 
                    color = 'lightgrey', 
-                   #linestyles='dashed',
                    linestyle=(0, (10, 4)) #dashed line
                    )
         ax2.hlines(y = intersection_point_emissions[1], 
                    xmin = 0, 
                    xmax = intersection_point_emissions[0], 
                    color = 'lightgrey', 
-                   #linestyles='dashed',
                    linestyle=(0, (10, 4))
                    ) #dashed line
 
    
-    ## Cost Plot ##
-    plt.rcParams["font.family"] = "Helvetica"
-    plt.rcParams["font.size"] = 24
-    # sns.lineplot(data=plot_func_df, 
-    #             x='years_of_ownership', 
-    #             y='running_cost_of_ownership', 
-    #             hue='fuelType',
-    #             palette=color_mapping,
-    #             ax=ax1)
+    ### Cost Plot ###
+
     sns.lineplot(data=plot_func_df, 
                 x='cumulative_months', 
                 y='running_cost_of_ownership', 
@@ -385,41 +374,35 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     cost_formatter = ticker.FuncFormatter(lambda x, pos: f'${x:,.0f}')
     ax1.yaxis.set_major_formatter(cost_formatter)
     ax1.yaxis.set_minor_formatter(cost_formatter)
-    #axs[0].set_title(f'Cost of Ownership')# for {model_1} and {model_2}', fontname='Sans Serif')
     ax1.set_title('\n')
     ax1.set_xlabel('\n Years of Ownership \n', fontsize=32, fontweight='bold')
     ax1.set_ylabel('\n Cost of Ownership ($) \n', fontsize=28)
     ax1.set_ylim(bottom = 0)
-    # ax1.set_xlim(0, 20)
     ax1.set_xlim(0, 240)
     xtick_positions = range(0, 241, 12)
     ax1.set_xticks(xtick_positions)
     ax1.set_xticklabels([f"{m//12}" for m in xtick_positions])
-    #set x-tick labels
-    ax1.lines[0].set_linewidth(3)
-    ax1.lines[1].set_linewidth(3)
     ax1.spines['top'].set_visible(False)
     ax1.spines['right'].set_visible(False)
+    ax1.lines[0].set_linewidth(3)
+    ax1.lines[1].set_linewidth(3)
     if apply_tax_credit:
-        ax1.lines[0].set_linewidth(1)
+        ax1.lines[0].set_linewidth(1) #set old EV line to thin
         ax1.lines[2].set_linewidth(3)
-    ax1.legend_.remove()
-    legend_patches = [mpatches.Patch(color=color, 
-                                     label=plot_func_df.loc[plot_func_df['fuelType'] == label1, 'model'].iloc[0]
-                                     if not plot_func_df.loc[plot_func_df['fuelType'] == label1, 'model'].empty else label1)
-                                     for label1, color in color_mapping.items()]
-    if apply_tax_credit:
         legend_patches = [mpatches.Patch(color=color, 
                                          label=(plot_func_df.loc[plot_func_df['fuelType'] == label1, 'model'].iloc[0] + " " + label1)
                                          if not plot_func_df.loc[plot_func_df['fuelType'] == label1, 'model'].empty else label1) 
                                          for label1, color in color_mapping.items()]
+    else:
+        legend_patches = [mpatches.Patch(color=color, 
+                                         label=plot_func_df.loc[plot_func_df['fuelType'] == label1, 'model'].iloc[0]
+                                         if not plot_func_df.loc[plot_func_df['fuelType'] == label1, 'model'].empty else label1)
+                                         for label1, color in color_mapping.items()]
+    ax1.legend_.remove()
     ax1.legend(handles=legend_patches, title="Model", fontsize=28, title_fontsize=32)
 
-    # model_colors = {'EV': 'blue', 'ICEV': 'orange', 'EV with Tax Credit': 'grey'}
-    # legend_patches = [mpatches.Patch(color=color, label=label) for label, color in model_colors.items()]
-    # ax2.legend(handles=legend_patches, title="Model", fontsize=16, title_fontsize=18)
-    
-    #st.markdown('## Matplotlib Chart')
+
+    ### Streamlit ###
 
     st.markdown("<h2 style='text-align: center;'>Cost of Ownership</h2>", unsafe_allow_html=True)
     st.pyplot(fig1)
@@ -428,7 +411,9 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     st.pyplot(fig2)
     # st.metric("Breakeven Year", intersection_point_cost[0], delta="2") ## could be used for showing the dashboarding metrics that Kelbe wants
     
-    ## CHART PACKAGE EXPERIMENTS ##
+
+    ### DIFFERENT CHART PACKAGE EXPERIMENTS ###
+
     # st.markdown('## Altair Chart')
 
     # line_chart = alt.Chart(plot_func_df).mark_line().encode(
@@ -468,8 +453,8 @@ def radio_button_output(grid_emissions_option):
     elif grid_emissions_option == 3:
         return 'All-Coal'
 
-vehicles_df['running_cost_of_ownership'] = 0.00
-vehicles_df['running_emissions'] = 0.00
+# vehicles_df['running_cost_of_ownership'] = 0.00
+# vehicles_df['running_emissions'] = 0.00
 
 ### Web App UI ###
 
@@ -497,6 +482,7 @@ with st.sidebar:
         value=3.15,
         help='Here is why we made this choice',
         label_visibility="visible")
+        #on_change=)
         
     electricity_slider = st.slider(
         label='Electricity Price ($/kWh):',
@@ -527,7 +513,7 @@ with st.sidebar:
         )
 
 def old_columns_code():
-    plot_func_df = plot_func_df
+    plot_func_df = plot_func_df #not real code--just here to be able to collapse def old_columns_code()
     # col1, col2 = st.columns(2)
     # with col1:
     #     EV_dropdown = st.selectbox(
@@ -578,8 +564,6 @@ def old_columns_code():
     #         max_value=20000, 
     #         value=11000, 
     #         step=500)
-
-#st.header('Check out these charts!')
 
 plot_cars(model_1=EV_dropdown, model_2=ICEV_dropdown, gas_price=gas_price_slider, kwh_price=electricity_slider, grid_emissions_option=grid_emissions_radio_buttons, miles_per_year=miles_input_box, apply_tax_credit=tax_credit_checkbox)
 
