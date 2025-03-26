@@ -29,9 +29,15 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import matplotlib.patches as mpatches
+import matplotlib.font_manager as fm
 import seaborn as sns
 import numpy as np
 import altair as alt
+
+
+# # Add font
+# fe = fm.FontEntry(fname='Montserrat-VariableFont_wght.ttf', name='Montserrat')
+# fm.fontManager.ttflist.insert(0, fe)
 
 vehicles_df = pd.read_csv('limited_vehicles.csv')
 grid_emissions_df = pd.read_csv('grid_emissions_forecast.csv')
@@ -200,6 +206,8 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     fig2.patch.set_linewidth(2)
     fig2.patch.set_edgecolor('black')
     ax2 = fig2.add_subplot(111)
+
+    # plt.rcParams['font.family'] = 'Montserrat'
 
     EV_model_df = vehicles_df[vehicles_df['model'] == model_1]
     ICEV_model_df = vehicles_df[vehicles_df['model'] == model_2]
@@ -463,7 +471,7 @@ def radio_button_output(grid_emissions_option):
 
 ### Web App UI ###
 
-st.title('Utah Clean Energy EV vs ICEV Cost and Emissions Calculator')
+st.title('EV vs ICEV Cost and Emissions Calculator')
 
 st.write('Created By Adrian Martino')
 
