@@ -475,7 +475,7 @@ def radio_button_output(grid_emissions_option):
 
 ### Web App UI ###
 
-st.title('EV vs Gas Vechicles: Cost and Emissions Calculator')
+st.title('EV vs Gas Vechicles: Cost and Emissions Visualization Tool')
 
 st.write('Created By Adrian Martino')
 
