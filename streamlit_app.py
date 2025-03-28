@@ -300,7 +300,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
                 palette=color_mapping,
                 ax=ax2)
     ax2.set_title('\n')
-    ax2.set_xlabel('\n Years of Ownership \n', fontsize=32, fontweight='bold')
+    ax2.set_xlabel('\n Years of Ownership \n', fontsize=32)#, fontweight='bold')
     ax2.set_ylabel('\n Emissions (tCO2) \n', fontsize=28)
     ax2.set_ylim(0,140)
     ax2.set_xlim(0, 240)
@@ -387,7 +387,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     ax1.yaxis.set_major_formatter(cost_formatter)
     ax1.yaxis.set_minor_formatter(cost_formatter)
     ax1.set_title('\n')
-    ax1.set_xlabel('\n Years of Ownership \n', fontsize=32, fontweight='bold')
+    ax1.set_xlabel('\n Years of Ownership \n', fontsize=32)#, fontweight='bold')
     ax1.set_ylabel('\n Cost of Ownership ($) \n', fontsize=28)
     ax1.set_ylim(bottom = 0)
     ax1.set_xlim(0, 240)
