@@ -227,7 +227,9 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     # EV_model_df['running_cost_of_ownership'] = EV_model_df['MSRP'] + (1013 * 0.66 * EV_model_df['years_of_ownership']) + (miles_per_year * EV_model_df['combE'] / 100 * kwh_price * EV_model_df['years_of_ownership'])
     # ICEV_model_df['running_cost_of_ownership'] = ICEV_model_df['MSRP'] + (1013 * ICEV_model_df['years_of_ownership']) + (miles_per_year / ICEV_model_df['comb08'] * gas_price * ICEV_model_df['years_of_ownership'])
     
-    EV_model_df['running_cost_of_ownership'] = EV_model_df['MSRP'] + (1013 * 0.66 * EV_model_df['cumulative_months']/12) + (miles_per_year * EV_model_df['combE'] / 100 * kwh_price * EV_model_df['cumulative_months']/12)
+    EV_model_df['running_cost_of_ownership'] = EV_model_df['MSRP'] + (1013 * 0.65 * EV_model_df['cumulative_months']/12) + (miles_per_year * EV_model_df['combE'] / 100 * kwh_price * EV_model_df['cumulative_months']/12) + np.where(((1.11 / 100 * miles_per_year) < 138.5),
+                                                                                                                                                                                                                                      (1.11 / 100 * miles_per_year / 12),
+                                                                                                                                                                                                                                      (138.5 / 12))
     ICEV_model_df['running_cost_of_ownership'] = ICEV_model_df['MSRP'] + (1013 * ICEV_model_df['cumulative_months']/12) + (miles_per_year / ICEV_model_df['comb08'] * gas_price * ICEV_model_df['cumulative_months']/12)
 
 
@@ -343,7 +345,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
         ax1.vlines(x = intersection_point_cost[0], 
                    ymin = 0, 
                    ymax = intersection_point_cost[1], 
-                   color = 'lightgrey', 
+                   color = 'grey', 
                    #linestyles='dashed',
                    linestyle=(0, (10, 4)) #dashed line
                    )
@@ -362,7 +364,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
         ax2.vlines(x = intersection_point_emissions[0], 
                    ymin = 0, 
                    ymax = intersection_point_emissions[1], 
-                   color = 'lightgrey', 
+                   color = 'grey', 
                    linestyle=(0, (10, 4)) #dashed line
                    )
         ax2.hlines(y = intersection_point_emissions[1], 
@@ -473,7 +475,7 @@ def radio_button_output(grid_emissions_option):
 
 ### Web App UI ###
 
-st.title('Utah Clean Energy EV vs ICEV Cost and Emissions Calculator')
+st.title('EV vs Gas Vechicles: Cost and Emissions Calculator')
 
 st.write('Created By Adrian Martino')
 
@@ -494,7 +496,7 @@ with st.sidebar:
         label='Gas Price ($/gallon):', 
         min_value=2.00, 
         max_value=5.00, 
-        value=3.15,
+        value=3.20,
         help='Here is why we made this choice',
         label_visibility="visible")
         #on_change=)
