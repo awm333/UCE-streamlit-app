@@ -5,31 +5,31 @@ st.set_page_config(page_title = 'Utah Clean Energy EV Tool',
                    menu_items={
                        'Get help': 'https://utahcleanenergy.org'})
 
-# Inject CSS to change tooltip background color (works for sidebar & main area)
-st.markdown(
-    """
-    <style>
-    /* Change background color and text color of tooltips */
-    div[data-testid="stTooltipContent"] {
-        background-color: #ffffff !important; /* Custom background */
-        color: black !important; /* Text color */
-        border-radius: 8px !important; /* Rounded corners */
-        padding: 8px 12px !important;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3) !important; /* Optional shadow */
-    }
-    /* Change the font size of st.metric() */
-    div[data-testid="stMetricValue"] {
-        font-size: 27px !important;  /* Adjust size */
-        /* font-weight: bold !important; */ /* Make it bold */
-        /* color: #e63946 !important; */ /* Optional: Change color */
-    }
-    div[data-testid="stMetricDelta"] {
-        font-size: 24px !important;  /* Change delta font size */
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+# Inject CSS
+# st.markdown(
+#     """
+#     <style>
+#     /* Change background color and text color of tooltips */
+#     div[data-testid="stTooltipContent"] {
+#         background-color: #ffffff !important; /* Custom background */
+#         color: black !important; /* Text color */
+#         border-radius: 8px !important; /* Rounded corners */
+#         padding: 8px 12px !important;
+#         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3) !important; /* Optional shadow */
+#     }
+#     /* Change the font size of st.metric() */
+#     div[data-testid="stMetricValue"] {
+#         font-size: 27px !important;  /* Adjust size */
+#         /* font-weight: bold !important; */ /* Make it bold */
+#         /* color: #e63946 !important; */ /* Optional: Change color */
+#     }
+#     div[data-testid="stMetricDelta"] {
+#         font-size: 24px !important;  /* Change delta font size */
+#     }
+#     </style>
+#     """,
+#     unsafe_allow_html=True
+# )
 
 with open( "style.css" ) as css:
     st.markdown( f'<style>{css.read()}</style>' , unsafe_allow_html= True)
@@ -545,7 +545,7 @@ with st.sidebar:
         min_value=2.00, 
         max_value=5.00, 
         value=3.20,
-        help='Here is why we made this choice',
+        help='Default set to the average price of gas in Utah, $3.20/gallon',
         label_visibility="visible")
         #on_change=)
         
@@ -554,7 +554,7 @@ with st.sidebar:
         min_value=0.00, 
         max_value=0.30, 
         value=0.12,
-        help='Here is why we made this choice',
+        help='Default set to the average cost of electricity in Utah, $0.12/kWh',
         label_visibility="visible")
 
     tax_credit_link = 'https://homes.rewiringamerica.org/federal-incentives/30d-new-ev-tax-incentive'
@@ -578,3 +578,4 @@ with st.sidebar:
         )
 
 plot_cars(model_1=EV_dropdown, model_2=ICEV_dropdown, gas_price=gas_price_slider, kwh_price=electricity_slider, grid_emissions_option=grid_emissions_radio_buttons, miles_per_year=miles_input_box, apply_tax_credit=tax_credit_checkbox)
+
