@@ -445,7 +445,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
 
     ### Streamlit ###
     #col1, col_space, col2 = st.columns([12,1,4])
-    col1, col2 = st.columns([3,1])
+    col1, col2 = st.columns([4,1])
     with col1:
         st.markdown("<h2 style='text-align: center;'>Cost of Ownership</h2>", unsafe_allow_html=True)
         st.pyplot(fig1)
