@@ -2,7 +2,26 @@
 
 html, body, [class*="css"] {
     font-family: 'Montserrat', sans-serif; 
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 500;
     color: #091747;
+}
+
+/* Change background color and text color of tooltips */
+div[data-testid="stTooltipContent"] {
+    background-color: #ffffff !important; /* Custom background */
+    color: black !important; /* Text color */
+    border-radius: 8px !important; /* Rounded corners */
+    padding: 8px 12px !important;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3) !important; /* Optional shadow */
+}
+
+/* Change the font size of st.metric() */
+div[data-testid="stMetricValue"] {
+    font-size: 27px !important;  /* Adjust size */
+    /* font-weight: bold !important; */ /* Make it bold */
+    /* color: #e63946 !important; */ /* Optional: Change color */
+}
+div[data-testid="stMetricDelta"] {
+    font-size: 24px !important;  /* Change delta font size */
 }
