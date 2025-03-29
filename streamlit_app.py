@@ -19,7 +19,7 @@ st.markdown(
     }
     /* Change the font size of st.metric() */
     div[data-testid="stMetricValue"] {
-        font-size: 22px !important;  /* Adjust size */
+        font-size: 30px !important;  /* Adjust size */
         /* font-weight: bold !important; */ /* Make it bold */
         /* color: #e63946 !important; */ /* Optional: Change color */
     }
@@ -468,6 +468,9 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
                   label_visibility = "visible",
                   help = f"Assuming 14 years of ownership--the [average age of cars passenger cars in operation]({vehicle_age_link})")
         
+        st.markdown(' ')
+        st.markdown(' ')
+
         st.metric(label = "Breakeven After: ",
                   value = str(int(intersection_point_cost[0]/12)) + ' Years',
                   label_visibility = "visible",
