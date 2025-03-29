@@ -42,8 +42,8 @@ import seaborn as sns
 import numpy as np
 import altair as alt
 
-vehicles_df = pd.read_csv('limited_vehicles.csv')
-grid_emissions_df = pd.read_csv('grid_emissions_forecast.csv')
+vehicles_df = pd.read_csv('data/limited_vehicles.csv')
+grid_emissions_df = pd.read_csv('data/grid_emissions_forecast.csv')
 
 def emissions_intersection_point_years(df_EV, df_ICEV):
     #Takes two dataframes, one for EV and one for ICEV, and returns the year and emissions at which the two intersect
@@ -323,7 +323,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
                 ax=ax2)
     ax2.set_title('\n')
     ax2.set_xlabel('\n Years of Ownership \n', fontsize=32)#, fontweight='bold')
-    ax2.set_ylabel('\n Emissions (tCO2) \n', fontsize=28)
+    ax2.set_ylabel('\n Emissions (tCO2) \n', fontsize=40)
     ax2.set_ylim(0,140)
     ax2.set_xlim(0, 182)
     xtick_positions = range(12, 181, 12)
@@ -422,7 +422,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     ax1.tick_params(axis='y', colors='black')
     for label in ax1.get_xticklabels() + ax1.get_yticklabels():
         #label.set_fontweight("bold")
-        label.set_fontsize(40)
+        label.set_fontsize(30)
     ax1.spines['top'].set_visible(False)
     ax1.spines['right'].set_visible(False)
     ax1.lines[0].set_linewidth(3)
