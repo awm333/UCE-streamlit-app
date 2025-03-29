@@ -33,8 +33,8 @@ import seaborn as sns
 import numpy as np
 import altair as alt
 
-vehicles_df = pd.read_csv('data/limited_vehicles.csv')
-grid_emissions_df = pd.read_csv('data/grid_emissions_forecast.csv')
+vehicles_df = pd.read_csv('limited_vehicles.csv')
+grid_emissions_df = pd.read_csv('grid_emissions_forecast.csv')
 
 def emissions_intersection_point_years(df_EV, df_ICEV):
     #Takes two dataframes, one for EV and one for ICEV, and returns the year and emissions at which the two intersect
