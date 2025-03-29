@@ -19,7 +19,7 @@ st.markdown(
     }
     /* Change the font size of st.metric() */
     div[data-testid="stMetricValue"] {
-        font-size: 30px !important;  /* Adjust size */
+        font-size: 22px !important;  /* Adjust size */
         /* font-weight: bold !important; */ /* Make it bold */
         /* color: #e63946 !important; */ /* Optional: Change color */
     }
