@@ -432,13 +432,13 @@ st.write('Created By Adrian Martino')
 
 with st.sidebar:
     EV_dropdown = st.selectbox(
-        label='Select EV',
+        label='Select Electric Vehicle:',
         options=vehicles_df[vehicles_df['fuelType'] == 'Electricity']['model'],
         format_func=add_make_to_model
         )
     
     ICEV_dropdown = st.selectbox(
-        label = 'Select ICEV:',
+        label = 'Select Gas Vehicle:',
         options = vehicles_df[vehicles_df['fuelType'] == 'Regular']['model'],
         format_func = add_make_to_model
         )
