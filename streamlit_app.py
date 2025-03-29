@@ -17,6 +17,15 @@ st.markdown(
         padding: 8px 12px !important;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3) !important; /* Optional shadow */
     }
+    /* Change the font size of st.metric() */
+    div[data-testid="stMetricValue"] {
+        font-size: 30px !important;  /* Adjust size */
+        /* font-weight: bold !important; */ /* Make it bold */
+        /* color: #e63946 !important; */ /* Optional: Change color */
+    }
+    div[data-testid="stMetricDelta"] {
+        font-size: 24px !important;  /* Change delta font size */
+    }
     </style>
     """,
     unsafe_allow_html=True
