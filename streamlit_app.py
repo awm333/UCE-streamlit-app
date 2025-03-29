@@ -412,7 +412,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     ax1.yaxis.set_minor_formatter(cost_formatter)
     ax1.set_title('\n')
     ax1.set_xlabel('\n Years of Ownership \n', fontsize=32)#, fontweight='bold')
-    ax1.set_ylabel('\n Cost of Ownership ($) \n', fontsize=28)
+    ax1.set_ylabel('\n Cost of Ownership ($) \n', fontsize=40)
     ax1.set_ylim(bottom = 0)
     ax1.set_xlim(0, 182)
     #xtick_positions = range(12, 181, 12)
@@ -422,7 +422,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     ax1.tick_params(axis='y', colors='black')
     for label in ax1.get_xticklabels() + ax1.get_yticklabels():
         #label.set_fontweight("bold")
-        label.set_fontsize(30)
+        label.set_fontsize(40)
     ax1.spines['top'].set_visible(False)
     ax1.spines['right'].set_visible(False)
     ax1.lines[0].set_linewidth(3)
@@ -466,7 +466,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
         st.metric(label = "Lifetime Savings: ", 
                   value = "$" + str(lifetime_savings),
                   label_visibility = "visible",
-                  help = f"Assuming 14 years of ownership--the [average age of cars passenger cars in operation]({vehicle_age_link})")
+                  help = f"Assuming 14 years of ownership--the [average age of cars passenger cars in operation]({vehicle_age_link}) in the United States")
         
         st.markdown(' ')
         st.markdown(' ')
