@@ -396,6 +396,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
         st.markdown(' ')
         st.markdown(' ')
         st.markdown(' ')
+        st.markdown(' ')
         
         vehicle_age_link = 'https://www.bts.gov/content/average-age-automobiles-and-trucks-operation-united-states'
         st.metric(label = "Lifetime Savings: ", 
