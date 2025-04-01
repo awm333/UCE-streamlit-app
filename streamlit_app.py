@@ -411,4 +411,6 @@ with st.sidebar:
 
 plot_cars(model_1=EV_dropdown, model_2=ICEV_dropdown, gas_price=gas_price_slider, kwh_price=electricity_slider, grid_emissions_option=grid_emissions_radio_buttons, miles_per_year=miles_input_box, apply_tax_credit=tax_credit_checkbox)
 
+st.markdown(' ')
+st.markdown(' ')
 st.write('Created By Adrian Martino')
