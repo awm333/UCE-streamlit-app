@@ -347,7 +347,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
         st.metric(label = "Breakeven After: ",
                   value = str(int(intersection_point_cost[0]/12)) + ' Years',
                   label_visibility = "visible",
-                  help = "The year during which the lifetime cost of ownership of the EV is less than the ICEV")
+                  help = "The year during which the running lifetime cost of ownership of the EV is less than the ICEV")
         
         st.markdown(' ')
         st.markdown(' ')
@@ -374,7 +374,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
         st.metric(label = "Breakeven After: ",
                   value = str(int(intersection_point_emissions[0]/12)) + ' Years',
                   label_visibility = "visible",
-                  help = "The year during which the lifetime cost of ownership of the EV is less than the ICEV")
+                  help = "The year during which the running lifetime emissions of the EV is less than the ICEV")
     
 def add_make_to_model(model):
     make = vehicles_df[vehicles_df['model'] == model]['make'].values[0]
