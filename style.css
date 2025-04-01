@@ -26,5 +26,5 @@ div[data-testid="stMetricDelta"] {
     font-size: 24px !important;  /* Change delta font size */
 }
 div[data-testid="stExpander"] details summary p{
-    font-size: 1.2rem;
+    font-size: 1.13rem;
 }
