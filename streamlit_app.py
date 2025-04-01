@@ -353,7 +353,7 @@ def radio_button_output(grid_emissions_option):
 
 st.title('EV vs Gas Vechicles: Cost and Emissions Visualization Tool')
 
-st.write('Created By Adrian Martino')
+
 
 with st.expander("How to Read This Chart"):
     #st.write('''Insert annotated version of charts here''')
@@ -411,3 +411,4 @@ with st.sidebar:
 
 plot_cars(model_1=EV_dropdown, model_2=ICEV_dropdown, gas_price=gas_price_slider, kwh_price=electricity_slider, grid_emissions_option=grid_emissions_radio_buttons, miles_per_year=miles_input_box, apply_tax_credit=tax_credit_checkbox)
 
+st.write('Created By Adrian Martino')
