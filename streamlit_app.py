@@ -364,7 +364,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
         st.markdown(' ')
         ## Emissions Dashboard Elements ##
 
-        st.metric(label = "Lifetime Emissions Saved: ", 
+        st.metric(label = "Saved Emissions: ", 
                   value = str(lifetime_emissions_savings) + " tCO2",
                   label_visibility = "visible",
                   help = f"Assuming 14 years of ownership--the [average age of cars passenger cars in operation]({vehicle_age_link}) in the United States")
