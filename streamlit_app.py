@@ -94,11 +94,21 @@ def cost_intersection_point_months(df_EV, df_ICEV):
     return_intersection_point = (return_mth, return_cost)
     return return_intersection_point
 
-def calculate_lifetime_savings(df_EV, df_ICEV):
+def calculate_lifetime_cost_savings(df_EV, df_ICEV):
     try:
         EV_lifetime_cost = df_EV[df_EV['cumulative_months'] == 180]['running_cost_of_ownership'].values[0]
         ICEV_lifetime_cost = df_ICEV[df_ICEV['cumulative_months'] == 180]['running_cost_of_ownership'].values[0]
         lifetime_savings = ICEV_lifetime_cost - EV_lifetime_cost
+    except:
+        lifetime_savings = 0
+    lifetime_savings = "{:,.0f}".format(lifetime_savings)
+    return lifetime_savings
+
+def calculate_lifetime_emissions_savings(df_EV, df_ICEV):
+    try:
+        EV_lifetime_emissions = df_EV[df_EV['cumulative_months'] == 180]['running_emissions'].values[0]
+        ICEV_lifetime_emissions = df_ICEV[df_ICEV['cumulative_months'] == 180]['running_emissions'].values[0]
+        lifetime_savings = ICEV_lifetime_emissions - EV_lifetime_emissions
     except:
         lifetime_savings = 0
     lifetime_savings = "{:,.0f}".format(lifetime_savings)
@@ -163,7 +173,8 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
   
     intersection_point_emissions = emissions_intersection_point_months(EV_model_df, ICEV_model_df)
     intersection_point_cost = cost_intersection_point_months(EV_model_df, ICEV_model_df)
-    lifetime_savings = calculate_lifetime_savings(EV_model_df, ICEV_model_df)
+    lifetime_cost_savings = calculate_lifetime_cost_savings(EV_model_df, ICEV_model_df)
+    lifetime_emissions_savings = calculate_lifetime_emissions_savings(EV_model_df, ICEV_model_df)
     
     plot_func_df = pd.concat([EV_model_df, ICEV_model_df])
 
@@ -211,7 +222,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
         plot_func_df = pd.concat([plot_func_df, tax_credit_EV_df])
         color_mapping = {'(w/ Tax Credit)': f'{UCE_blue}', '(w/o Tax Credit)': 'grey', 'Regular': f'{UCE_red}'}
         intersection_point_cost = cost_intersection_point_months(tax_credit_EV_df, ICEV_model_df)
-        lifetime_savings = calculate_lifetime_savings(tax_credit_EV_df, ICEV_model_df)
+        lifetime_cost_savings = calculate_lifetime_cost_savings(tax_credit_EV_df, ICEV_model_df)
 
 
     ### Interesection Points ###
@@ -322,9 +333,11 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
         st.markdown(' ')
         st.markdown(' ')
         
+        ## Cost Dashboard Elements ##
+
         vehicle_age_link = 'https://www.bts.gov/content/average-age-automobiles-and-trucks-operation-united-states'
         st.metric(label = "Lifetime Savings: ", 
-                  value = "$" + str(lifetime_savings),
+                  value = "$" + str(lifetime_cost_savings),
                   label_visibility = "visible",
                   help = f"Assuming 14 years of ownership--the [average age of cars passenger cars in operation]({vehicle_age_link}) in the United States")
         
@@ -333,6 +346,29 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
 
         st.metric(label = "Breakeven After: ",
                   value = str(int(intersection_point_cost[0]/12)) + ' Years',
+                  label_visibility = "visible",
+                  help = "The year during which the lifetime cost of ownership of the EV is less than the ICEV")
+        
+        st.markdown(' ')
+        st.markdown(' ')
+        st.markdown(' ')
+        st.markdown(' ')
+        st.markdown(' ')
+        st.markdown(' ')
+        st.markdown(' ')
+        st.markdown(' ')
+        ## Emissions Dashboard Elements ##
+
+        st.metric(label = "Lifetime Emissions Saved: ", 
+                  value = str(lifetime_emissions_savings) + " tCO2",
+                  label_visibility = "visible",
+                  help = f"Assuming 14 years of ownership--the [average age of cars passenger cars in operation]({vehicle_age_link}) in the United States")
+        
+        st.markdown(' ')
+        st.markdown(' ')
+
+        st.metric(label = "Breakeven After: ",
+                  value = str(int(intersection_point_emissions[0]/12)) + ' Years',
                   label_visibility = "visible",
                   help = "The year during which the lifetime cost of ownership of the EV is less than the ICEV")
     
@@ -353,9 +389,7 @@ def radio_button_output(grid_emissions_option):
 
 st.title('EV vs Gas Vechicles: Cost and Emissions Visualization Tool')
 
-
-
-with st.expander("How to Read This Chart"):
+with st.expander(label = "How to Read This Chart"):
     #st.write('''Insert annotated version of charts here''')
     st.image('How-To Mock Up.jpg')
 
