@@ -18,44 +18,6 @@ import numpy as np
 vehicles_df = pd.read_csv('data/limited_vehicles.csv')
 grid_emissions_df = pd.read_csv('data/grid_emissions_forecast.csv')
 
-def emissions_intersection_point_years(df_EV, df_ICEV):
-    #Takes two dataframes, one for EV and one for ICEV, and returns the year and emissions at which the two intersect
-    #Returns the year AFTER the intersction point
-    #If no intersection point is found, returns (0,0)
-    df_EV_comp = df_EV[['years_of_ownership', 'running_emissions']]
-    df_EV_comp.rename(columns={'running_emissions': 'EV_running_emissions'}, inplace=True)
-
-    df_ICEV_comp = df_ICEV[['years_of_ownership', 'running_emissions']]
-    df_ICEV_comp.rename(columns={'running_emissions': 'ICEV_running_emissions'}, inplace=True)
-
-    df_comp = pd.merge(df_EV_comp, df_ICEV_comp, on='years_of_ownership', how='outer')
-    df_comp['diff'] = df_comp['EV_running_emissions'] - df_comp['ICEV_running_emissions']
-    df_comp['diff_sign'] = np.sign(df_comp['diff'])
-    df_comp['ly_diff_sign'] = df_comp['diff_sign'].shift(1)
-    df_comp['is_intersection_point'] = np.where((df_comp['diff_sign'] != df_comp['ly_diff_sign']) & (df_comp['years_of_ownership'] > 1), 
-                                            1, 
-                                            0)
-    #if there is an exact match, set the intersection point to 2
-    df_comp['is_intersection_point'] = np.where((df_comp['diff_sign'] == 0),
-                                            2,
-                                            df_comp['is_intersection_point'])
-
-    df_return = df_comp[df_comp['is_intersection_point'] > 0][['years_of_ownership', 'EV_running_emissions', 'ICEV_running_emissions']]
-    #select row with max intersection point
-    df_return = df_comp[df_comp['is_intersection_point'] == df_comp['is_intersection_point'].max()]
-    try:
-            return_yr = df_return['years_of_ownership'].values[0]
-            return_EV_emissions = df_return['EV_running_emissions'].values[0]
-            return_ICEV_emissions = df_return['ICEV_running_emissions'].values[0]
-    except:
-            return_yr = 0
-            return_EV_emissions = 0
-            return_ICEV_emissions = 0
-    return_emissions = np.average([return_EV_emissions, return_ICEV_emissions])
-
-    return_intersection_point = (return_yr, return_emissions)
-    return return_intersection_point
-
 def emissions_intersection_point_months(df_EV, df_ICEV):
     #Takes two dataframes, one for EV and one for ICEV, and returns the month and emissions at which the two intersect
     #Returns the month AFTER the intersction point
@@ -92,44 +54,6 @@ def emissions_intersection_point_months(df_EV, df_ICEV):
     return_emissions = np.average([return_EV_emissions, return_ICEV_emissions])
 
     return_intersection_point = (return_mth, return_emissions)
-    return return_intersection_point
-
-def cost_intersection_point_years(df_EV, df_ICEV):
-    #Takes two dataframes, one for EV and one for ICEV, and returns the year and emissions at which the two intersect
-    #Returns the year AFTER the intersction point
-    #If no intersection point is found, returns (0,0)
-    df_EV_comp = df_EV[['years_of_ownership', 'running_cost_of_ownership']]
-    df_EV_comp.rename(columns={'running_cost_of_ownership': 'EV_running_cost'}, inplace=True)
-
-    df_ICEV_comp = df_ICEV[['years_of_ownership', 'running_cost_of_ownership']]
-    df_ICEV_comp.rename(columns={'running_cost_of_ownership': 'ICEV_running_cost'}, inplace=True)
-
-    df_comp = pd.merge(df_EV_comp, df_ICEV_comp, on='years_of_ownership', how='outer')
-    df_comp['diff'] = df_comp['EV_running_cost'] - df_comp['ICEV_running_cost']
-    df_comp['diff_sign'] = np.sign(df_comp['diff'])
-    df_comp['ly_diff_sign'] = df_comp['diff_sign'].shift(1)
-    df_comp['is_intersection_point'] = np.where((df_comp['diff_sign'] != df_comp['ly_diff_sign']) & (df_comp['years_of_ownership'] > 1), 
-                                            1, 
-                                            0)
-    #if there is an exact match, set the intersection point to 2
-    df_comp['is_intersection_point'] = np.where((df_comp['diff_sign'] == 0),
-                                            2,
-                                            df_comp['is_intersection_point'])
-
-    df_return = df_comp[df_comp['is_intersection_point'] > 0][['years_of_ownership', 'EV_running_cost', 'ICEV_running_cost']]
-    #select row with max intersection point
-    df_return = df_comp[df_comp['is_intersection_point'] == df_comp['is_intersection_point'].max()]
-    try:
-            return_yr = df_return['years_of_ownership'].values[0]
-            return_EV_cost = df_return['EV_running_cost'].values[0]
-            return_ICEV_cost = df_return['ICEV_running_cost'].values[0]
-    except:
-            return_yr = 0
-            return_EV_cost = 0
-            return_ICEV_cost = 0
-    return_cost = np.average([return_EV_cost, return_ICEV_cost])
-
-    return_intersection_point = (return_yr, return_cost)
     return return_intersection_point
 
 def cost_intersection_point_months(df_EV, df_ICEV):
@@ -290,7 +214,6 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
         lifetime_savings = calculate_lifetime_savings(tax_credit_EV_df, ICEV_model_df)
 
 
-
     ### Interesection Points ###
 
     if intersection_point_cost[0] != 0:
@@ -379,6 +302,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
 
 
     ### Streamlit ###
+
     #col1, col_space, col2 = st.columns([12,1,4])
     col1, col2 = st.columns([3.5,1])
     with col1:
@@ -431,6 +355,10 @@ st.title('EV vs Gas Vechicles: Cost and Emissions Visualization Tool')
 
 st.write('Created By Adrian Martino')
 
+with st.expander("How to Read This Chart"):
+    #st.write('''Insert annotated version of charts here''')
+    st.image('How-To Mock Up.jpg')
+
 with st.sidebar:
     EV_dropdown = st.selectbox(
         label='Select Electric Vehicle:',
@@ -468,7 +396,7 @@ with st.sidebar:
         )
 
     miles_input_box = st.number_input(
-        label='Miles Driven per Year',
+        label='Miles Driven per Year:',
         min_value=0, 
         max_value=20000, 
         value=11000, 
