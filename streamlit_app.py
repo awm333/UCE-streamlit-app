@@ -394,7 +394,7 @@ def radio_button_output(grid_emissions_option):
 
 ### Web App UI ###
 
-st.title('EV vs Gas Vechicles: Cost and Emissions Visualization Tool')
+#st.title('EV vs Gas Vechicles: Cost and Emissions Visualization Tool')
 
 with st.expander(label = "How to Read This Chart"):
     #st.write('''Insert annotated version of charts here''')
