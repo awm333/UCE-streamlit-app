@@ -444,7 +444,7 @@ with st.sidebar:
     grid_emissions_radio_buttons = st.radio(
         label='How Are You Charging Your EV?:', 
         options=[1,2,3],
-        captions=["(Most Realistic) PacifiCorp's Forecasts", "Assuming No Grid Improvements", "Hypothetical All-Coal Grid"],
+        captions=["(Most Realistic) PacifiCorp's Forecasts", "Assuming No Future Grid Improvements", "Hypothetical All-Coal Grid"],
         format_func=radio_button_output
         )
     
