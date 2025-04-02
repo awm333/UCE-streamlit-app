@@ -387,7 +387,7 @@ def radio_button_output(grid_emissions_option):
     elif grid_emissions_option == 2:
         return 'Today\'s Grid'
     elif grid_emissions_option == 3:
-        return 'All-Coal'
+        return '100% Coal'
     elif grid_emissions_option == 4:
         return '100% Renewable'
 
