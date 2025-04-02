@@ -410,6 +410,7 @@ with st.sidebar:
     ICEV_dropdown = st.selectbox(
         label = 'Select Gas Vehicle:',
         options = vehicles_df[vehicles_df['fuelType'] == 'Regular']['model'],
+        index = 5,
         format_func = add_make_to_model
         )
     
