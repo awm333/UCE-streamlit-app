@@ -457,4 +457,4 @@ plot_cars(model_1=EV_dropdown, model_2=ICEV_dropdown, gas_price=gas_price_slider
 
 st.markdown(' ')
 st.markdown(' ')
-st.write('Created By Adrian Martino')
+#st.write('Created By Adrian Martino')
