@@ -447,8 +447,13 @@ with st.sidebar:
         captions=["PacifiCorp's Forecasts", "Based on 2023 Actuals", "Hypothetical All-Coal Grid"],
         format_func=radio_button_output
         )
+    
+    st.markdown(' ')
+    st.markdown(' ')
+    st.write('To learn more about this tool, read [How This Tool Works](https://www.google.com/search?q=frogs&sca_esv=b657747ebb3c27f5&rlz=1C5CHFA_enUS946US960&sxsrf=AHTn8zq3c1AY0P0PC05dtX4FqAjB7Q75KQ%3A1743558298811&ei=mpbsZ7ufMdnckPIP1o_vwAs&ved=0ahUKEwi71K7onLiMAxVZLkQIHdbHG7gQ4dUDCBA&uact=5&oq=frogs&gs_lp=Egxnd3Mtd2l6LXNlcnAiBWZyb2dzMgoQABiwAxjWBBhHMgoQABiwAxjWBBhHMgoQABiwAxjWBBhHMgoQABiwAxjWBBhHMgoQABiwAxjWBBhHMgoQABiwAxjWBBhHMgoQABiwAxjWBBhHMgoQABiwAxjWBBhHMg0QABiABBiwAxhDGIoFMg0QABiABBiwAxhDGIoFMg0QABiABBiwAxhDGIoFMg0QABiABBiwAxhDGIoFMg4QABiwAxjkAhjWBNgBATIOEAAYsAMY5AIY1gTYAQEyDhAAGLADGOQCGNYE2AEBMhMQLhiABBiwAxhDGMgDGIoF2AEBMhMQLhiABBiwAxhDGMgDGIoF2AEBMhMQLhiABBiwAxhDGMgDGIoF2AEBMhMQLhiABBiwAxhDGMgDGIoF2AEBSIEDUKMCWKMCcAF4AZABAJgBAKABAKoBALgBA8gBAPgBAZgCAaACDJgDAIgGAZAGE7oGBggBEAEYCZIHATGgBwA&sclient=gws-wiz-serp)')
 
 plot_cars(model_1=EV_dropdown, model_2=ICEV_dropdown, gas_price=gas_price_slider, kwh_price=electricity_slider, grid_emissions_option=grid_emissions_radio_buttons, miles_per_year=miles_input_box, apply_tax_credit=tax_credit_checkbox)
+
 
 st.markdown(' ')
 st.markdown(' ')
