@@ -446,7 +446,7 @@ with st.sidebar:
     grid_emissions_radio_buttons = st.radio(
         label='How Are You Charging Your EV?:', 
         options=[1,2,3, 4],
-        captions=["(Most Realistic) Rocky Mountain Power's Planned Energy Mix", "Assuming No New Clean Energy is Added to Rocky Mountain Power's Energy Mix", "Hypothetical All-Coal Grid", "Renewable"],
+        captions=["(Most Realistic) Rocky Mountain Power's Planned Energy Mix", "Assuming No Changes to Rocky Mountain Power's Energy Mix", "Hypothetical All-Coal Grid", "Charge with Onsite Solar or Fully Clean Grid"],
         format_func=radio_button_output
         )
     
