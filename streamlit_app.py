@@ -96,8 +96,8 @@ def cost_intersection_point_months(df_EV, df_ICEV):
 
 def calculate_lifetime_cost_savings(df_EV, df_ICEV):
     try:
-        EV_lifetime_cost = df_EV[df_EV['cumulative_months'] == 180]['running_cost_of_ownership'].values[0]
-        ICEV_lifetime_cost = df_ICEV[df_ICEV['cumulative_months'] == 180]['running_cost_of_ownership'].values[0]
+        EV_lifetime_cost = df_EV[df_EV['cumulative_months'] == 168]['running_cost_of_ownership'].values[0]
+        ICEV_lifetime_cost = df_ICEV[df_ICEV['cumulative_months'] == 168]['running_cost_of_ownership'].values[0]
         lifetime_savings = ICEV_lifetime_cost - EV_lifetime_cost
     except:
         lifetime_savings = 0
@@ -106,8 +106,8 @@ def calculate_lifetime_cost_savings(df_EV, df_ICEV):
 
 def calculate_lifetime_emissions_savings(df_EV, df_ICEV):
     try:
-        EV_lifetime_emissions = df_EV[df_EV['cumulative_months'] == 180]['running_emissions'].values[0]
-        ICEV_lifetime_emissions = df_ICEV[df_ICEV['cumulative_months'] == 180]['running_emissions'].values[0]
+        EV_lifetime_emissions = df_EV[df_EV['cumulative_months'] == 168]['running_emissions'].values[0]
+        ICEV_lifetime_emissions = df_ICEV[df_ICEV['cumulative_months'] == 168]['running_emissions'].values[0]
         lifetime_savings = ICEV_lifetime_emissions - EV_lifetime_emissions
     except:
         lifetime_savings = 0
