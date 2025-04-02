@@ -385,7 +385,7 @@ def radio_button_output(grid_emissions_option):
     if grid_emissions_option == 1:
         return 'Planned Grid'
     elif grid_emissions_option == 2:
-        return 'Today\'s Grid'
+        return 'Static Grid'
     elif grid_emissions_option == 3:
         return '100% Coal'
     elif grid_emissions_option == 4:
@@ -446,7 +446,7 @@ with st.sidebar:
     grid_emissions_radio_buttons = st.radio(
         label='How Are You Charging Your EV?:', 
         options=[1,2,3, 4],
-        captions=["(Most Realistic) Rocky Mountain Power's Planned Energy Mix", "Assuming No Changes to Rocky Mountain Power's Energy Mix", "Hypothetical 100% Coal Energy Mix", "Charge with Onsite Solar or Fully Clean Grid"],
+        captions=["(Most Realistic) Rocky Mountain Power's Planned Energy Mix", "Assuming No Changes to Rocky Mountain Power's 2023 Energy Mix", "Hypothetical 100% Coal Energy Mix", "Charge with Onsite Solar or Fully Clean Grid"],
         format_func=radio_button_output
         )
     
