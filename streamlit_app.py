@@ -383,11 +383,13 @@ def add_make_to_model(model):
 
 def radio_button_output(grid_emissions_option):
     if grid_emissions_option == 1:
-        return 'Actual Projected Grid'
+        return 'Planned Grid'
     elif grid_emissions_option == 2:
         return 'Today\'s Grid'
     elif grid_emissions_option == 3:
         return 'All-Coal'
+    elif grid_emissions_option == 4:
+        return '100% Renewable'
 
 
 ### Web App UI ###
@@ -443,8 +445,8 @@ with st.sidebar:
 
     grid_emissions_radio_buttons = st.radio(
         label='How Are You Charging Your EV?:', 
-        options=[1,2,3],
-        captions=["(Most Realistic) Rocky Mountain Power's Planned Energy Mix", "Assuming No New Clean Energy is Added to Rocky Mountain Power's Energy Mix", "Hypothetical All-Coal Grid"],
+        options=[1,2,3, 4],
+        captions=["(Most Realistic) Rocky Mountain Power's Planned Energy Mix", "Assuming No New Clean Energy is Added to Rocky Mountain Power's Energy Mix", "Hypothetical All-Coal Grid", "Renewable"],
         format_func=radio_button_output
         )
     
