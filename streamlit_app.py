@@ -193,7 +193,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
                 ax=ax2)
     ax2.set_title('\n')
     ax2.set_xlabel('\n Years of Ownership \n', fontsize=32)#, fontweight='bold')
-    ax2.set_ylabel('\n Emissions (tCO2) \n', fontsize=40)
+    ax2.set_ylabel('\n Emissions (tCO₂) \n', fontsize=40)
     #ax2.set_ylim(0,140)
     ax2.set_ylim(bottom = 0)
     ax2.set_xlim(0, 182)
@@ -254,7 +254,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     if intersection_point_emissions[0] != 0:
         # axs[1].text(x = intersection_point_emissions[0] - 4, 
         #             y = intersection_point_emissions[1] + 0.25, 
-        #             s = f'{round(intersection_point_emissions[1], 2)} tCO2', fontsize=12)
+        #             s = f'{round(intersection_point_emissions[1], 2)} tCO₂', fontsize=12)
         ax2.vlines(x = intersection_point_emissions[0], 
                    ymin = 0, 
                    ymax = intersection_point_emissions[1], 
@@ -365,7 +365,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
         ## Emissions Dashboard Elements ##
 
         st.metric(label = "Saved Emissions: ", 
-                  value = str(lifetime_emissions_savings) + " tCO2",
+                  value = str(lifetime_emissions_savings) + " tCO₂",
                   label_visibility = "visible",
                   help = f"Assuming 14 years of ownership--the [average age of cars passenger cars in operation]({vehicle_age_link}) in the United States")
         
