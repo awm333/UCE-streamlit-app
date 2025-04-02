@@ -434,6 +434,7 @@ with st.sidebar:
     tax_credit_checkbox = st.checkbox(
         label='Apply Full Federal Tax Credit',
         help='Check this box to include the full, $7,500 Federal Tax Credit for EVs.  For more information, [click here](' + tax_credit_link + ').',
+        value=true
         )
 
     miles_input_box = st.number_input(
