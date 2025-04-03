@@ -395,18 +395,19 @@ with st.expander(label = "How to Read This Chart"):
 
 with st.sidebar:
     EV_dropdown = st.selectbox(
-        label='Select Electric Vehicle:',
+        label='**Step 1:** Choose Your EV:',
         options=vehicles_df[vehicles_df['fuelType'] == 'Electricity']['model'],
         format_func=add_make_to_model
         )
     
     ICEV_dropdown = st.selectbox(
-        label = 'Select Gas Vehicle:',
+        label = '**Step 2:** Choose Your Gas Vehicle:',
         options = vehicles_df[vehicles_df['fuelType'] == 'Regular']['model'],
         index = 5,
         format_func = add_make_to_model
         )
     
+    st.write('**Step 3: Set Your Gas and Electricity Prices**')
     gas_price_slider = st.slider(
         label='Gas Price ($/gallon):', 
         min_value=2.00, 
@@ -426,20 +427,20 @@ with st.sidebar:
 
     tax_credit_link = 'https://homes.rewiringamerica.org/federal-incentives/30d-new-ev-tax-incentive'
     tax_credit_checkbox = st.checkbox(
-        label='Apply Full Federal Tax Credit',
+        label='**Step 4:** Apply Full Federal Tax Credit?',
         help='Check this box to include the full, $7,500 Federal Tax Credit for EVs.  For more information, [click here](' + tax_credit_link + ').',
         value=True
         )
 
     miles_input_box = st.number_input(
-        label='Miles Driven per Year:',
+        label='**Step 5:** How Many Miles Do You Drive per Year?',
         min_value=0, 
         max_value=20000, 
         value=13500, 
         step=500)
 
     grid_emissions_radio_buttons = st.radio(
-        label='How Are You Charging Your EV?', 
+        label='**Step 6:** How Are You Charging Your EV?', 
         options=[1,2,3,4],
         captions=["Rocky Mountain Power's Planned Energy Mix", 
                   "Assuming No Changes to Rocky Mountain Power's 2023 Energy Mix", 
