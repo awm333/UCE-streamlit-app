@@ -334,7 +334,9 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
         st.markdown(' ')
 
         st.metric(label = "Breakeven After: ",
-                  value = str(int(intersection_point_cost[0]/12)) + str(np.where(((intersection_point_cost[0]/12) == 1), ' Year', ' Years')),
+                  value = str(int(intersection_point_cost[0]/12)) + str(np.where(((intersection_point_cost[0]/12) == 1), ' Year', ' Years')) + str(np.where((intersection_point_cost[0] % 12 != 0), 
+                                                                                                                                                       ' and ' + str(int(intersection_point_cost[0] % 12)) + ' Months', 
+                                                                                                                                                       '')),
                   label_visibility = "visible",
                   help = "The year during which the running lifetime cost of ownership of the EV is less than the ICEV")
         
@@ -361,7 +363,9 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
         st.markdown(' ')
 
         st.metric(label = "Breakeven After: ",
-                  value = str(int(intersection_point_emissions[0]/12)) + str(np.where(((intersection_point_emissions[0]/12) == 1), ' Year', ' Years')),
+                  value = str(int(intersection_point_emissions[0]/12)) + str(np.where(((intersection_point_emissions[0]/12) == 1), ' Year', ' Years')) + str(np.where((intersection_point_emissions[0] % 12 != 0), 
+                                                                                                                                                       ' and ' + str(int(intersection_point_emissions[0] % 12)) + ' Months', 
+                                                                                                                                                       '')),
                   label_visibility = "visible",
                   help = "The year during which the running lifetime emissions of the EV is less than the ICEV")
     
@@ -434,9 +438,12 @@ with st.sidebar:
         step=500)
 
     grid_emissions_radio_buttons = st.radio(
-        label='How Are You Charging Your EV?:', 
+        label='How Are You Charging Your EV?', 
         options=[1,2,3,4],
-        captions=["Rocky Mountain Power's Planned Energy Mix", "Assuming No Changes to Rocky Mountain Power's 2023 Energy Mix", "Hypothetical 100% Coal Energy Mix", "Charge with Onsite Solar or Fully Clean Grid"],
+        captions=["Rocky Mountain Power's Planned Energy Mix", 
+                  "Assuming No Changes to Rocky Mountain Power's 2023 Energy Mix", 
+                  "Hypothetical 100% Coal Energy Mix", 
+                  "Charge with Onsite Solar or Fully Clean Grid"],
         format_func=radio_button_output
         )
     
