@@ -335,7 +335,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
 
         st.metric(label = "Breakeven After: ",
                   value = str(int(intersection_point_cost[0]/12)) + str(np.where(((intersection_point_cost[0]/12) == 1), ' Year', ' Years')) + str(np.where((intersection_point_cost[0] % 12 != 0), 
-                                                                                                                                                       ' and ' + str(int(intersection_point_cost[0] % 12)) + ' Months', 
+                                                                                                                                                       ', ' + str(int(intersection_point_cost[0] % 12)) + ' Months', 
                                                                                                                                                        '')),
                   label_visibility = "visible",
                   help = "The year during which the running lifetime cost of ownership of the EV is less than the ICEV")
@@ -385,7 +385,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
 
         st.metric(label = "Breakeven After: ",
                   value = str(int(intersection_point_emissions[0]/12)) + str(np.where(((intersection_point_emissions[0]/12) == 1), ' Year', ' Years')) + str(np.where((intersection_point_emissions[0] % 12 != 0), 
-                                                                                                                                                       ' and ' + str(int(intersection_point_emissions[0] % 12)) + ' Months', 
+                                                                                                                                                       ', ' + str(int(intersection_point_emissions[0] % 12)) + ' Months', 
                                                                                                                                                        '')),
                   label_visibility = "visible",
                   help = "The year during which the running lifetime emissions of the EV is less than the ICEV")
