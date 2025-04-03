@@ -354,7 +354,6 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
         st.markdown(' ')
         st.markdown(' ')
         st.markdown(' ')
-        st.markdown(' ')
         ## Emissions Dashboard Elements ##
 
         st.metric(label = "Saved Emissions: ", 
