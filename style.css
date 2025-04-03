@@ -25,7 +25,7 @@ div[data-testid="stMetricValue"] {
 
 /* Change the font size of st.Expander() Title */
 div[data-testid="stExpander"] details summary p{
-    font-size: 1.2rem;
+    font-size: 1.13rem;
 }
 
 /* div[data-testid="stCheckbox"] label {
@@ -64,3 +64,4 @@ div[data-testid="stCheckbox"] label {
 div[data-testid="stCheckbox"] input[type="checkbox"] {
     margin-left: auto !important; /* Forces checkbox to the far right */
 }
+
