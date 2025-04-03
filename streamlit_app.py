@@ -407,7 +407,7 @@ with st.sidebar:
         format_func = add_make_to_model
         )
     
-    st.write('**Step 3: Set Your Gas and Electricity Prices**')
+    st.write('**Step 3:** Set Your Gas and Electricity Prices')
     gas_price_slider = st.slider(
         label='Gas Price ($/gallon):', 
         min_value=2.00, 
