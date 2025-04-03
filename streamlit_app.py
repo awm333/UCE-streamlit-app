@@ -332,34 +332,16 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
         
         st.markdown(' ')
         st.markdown(' ')
-
-        st.metric(label = "Breakeven After: ",
-                  value = str(int(intersection_point_cost[0]/12)) + str(np.where(((intersection_point_cost[0]/12) == 1), ' Year', ' Years')) + str(np.where((intersection_point_cost[0] % 12 != 0), 
+      
+        breakeven_value = str(int(intersection_point_cost[0]/12)) + str(np.where(((intersection_point_cost[0]/12) == 1), ' Year', ' Years')) + str(np.where((intersection_point_cost[0] % 12 != 0), 
                                                                                                                                                        ', ' + str(int(intersection_point_cost[0] % 12)) + ' Months', 
-                                                                                                                                                       '')),
+                                                                                                                                                       ''))
+        st.metric(label = "Breakeven After: ",
+                  #value = breakeven_value,
+                  value = str(int(intersection_point_cost[0]/12)) + str(np.where(((intersection_point_cost[0]/12) == 1), ' Year', ' Years')), 
                   label_visibility = "visible",
                   help = "The year during which the running lifetime cost of ownership of the EV is less than the ICEV")
-        st.markdown("""
-                  <style>
-                      .custom-metric {
-                          text-align: left;
-                          font-weight: light;
-                          font-size: 18px;
-                      }
-                      .custom-value {
-                          font-size: 32px;
-                      }
-                      .custom-delta {
-                          color: green;
-                          font-size: 20px;
-                      }
-                  </style>
-                  <div class="custom-metric">
-                      Total Sales <br>
-                      <span class="custom-value">10,000</span> <br>
-                      <span class="custom-delta">(+5%)</span>
-                  </div>
-              """, unsafe_allow_html=True)
+
         
         st.markdown(' ')
         st.markdown(' ')
@@ -384,9 +366,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
         st.markdown(' ')
 
         st.metric(label = "Breakeven After: ",
-                  value = str(int(intersection_point_emissions[0]/12)) + str(np.where(((intersection_point_emissions[0]/12) == 1), ' Year', ' Years')) + str(np.where((intersection_point_emissions[0] % 12 != 0), 
-                                                                                                                                                       ', ' + str(int(intersection_point_emissions[0] % 12)) + ' Months', 
-                                                                                                                                                       '')),
+                  value = str(int(intersection_point_emissions[0]/12)) + str(np.where(((intersection_point_emissions[0]/12) == 1), ' Year', ' Years')),
                   label_visibility = "visible",
                   help = "The year during which the running lifetime emissions of the EV is less than the ICEV")
     
