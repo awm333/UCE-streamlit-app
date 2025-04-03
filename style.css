@@ -18,12 +18,9 @@ div[data-testid="stTooltipContent"] {
 
 /* Change the font size of st.metric() */
 div[data-testid="stMetricValue"] {
-    font-size: 27px !important;  /* Adjust size */
+    font-size: 23px !important;  /* Adjust size */
     /* font-weight: bold !important; */ /* Make it bold */
     /* color: #e63946 !important; */ /* Optional: Change color */
-}
-div[data-testid="stMetricDelta"] {
-    font-size: 24px !important;  /* Change delta font size */
 }
 div[data-testid="stExpander"] details summary p{
     font-size: 1.13rem;
