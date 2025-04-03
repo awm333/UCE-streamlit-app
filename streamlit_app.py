@@ -167,6 +167,8 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     elif grid_emissions_option == 3:
         EV_model_df['running_emissions'] = EV_model_df['Manufacture_Emissions_tCO2'] + ((1.047798 / 1000 * EV_model_df['combE'] / 100 * miles_per_year * EV_model_df['cumulative_months']/12))
         #'combE' = kWh/100 miles, 1.047798 tCO2/MWh (from EIA 2.31 lbs CO2/kWh generated from Coal)
+    elif grid_emissions_option == 4:
+        EV_model_df['running_emissions'] = EV_model_df['Manufacture_Emissions_tCO2']
 
     ICEV_model_df['running_emissions'] = ICEV_model_df['Manufacture_Emissions_tCO2'] + (8887 / ICEV_model_df['comb08'] * miles_per_year * ICEV_model_df['cumulative_months']/12/1000/1000)
                                                   #8,887 gCO2/gallon
@@ -243,13 +245,6 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
                    #linestyles='dashed',
                    linestyle=(0, (10, 4)) #dashed line
                    )
-        ax1.hlines(y = intersection_point_cost[1], 
-                   xmin = 0, 
-                   xmax = intersection_point_cost[0], 
-                   color = 'lightgrey', 
-                   #linestyles='dashed',
-                   linestyle=(0, (10, 4))
-                   )
 
     if intersection_point_emissions[0] != 0:
         # axs[1].text(x = intersection_point_emissions[0] - 4, 
@@ -261,13 +256,6 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
                    color = 'grey', 
                    linestyle=(0, (10, 4)) #dashed line
                    )
-        ax2.hlines(y = intersection_point_emissions[1], 
-                   xmin = 0, 
-                   xmax = intersection_point_emissions[0], 
-                   color = 'lightgrey', 
-                   linestyle=(0, (10, 4))
-                   ) #dashed line
-
    
     ### Cost Plot ###
 
@@ -442,12 +430,12 @@ with st.sidebar:
         label='Miles Driven per Year:',
         min_value=0, 
         max_value=20000, 
-        value=11000, 
+        value=13500, 
         step=500)
 
     grid_emissions_radio_buttons = st.radio(
         label='How Are You Charging Your EV?:', 
-        options=[1,2,3, 4],
+        options=[1,2,3,4],
         captions=["Rocky Mountain Power's Planned Energy Mix", "Assuming No Changes to Rocky Mountain Power's 2023 Energy Mix", "Hypothetical 100% Coal Energy Mix", "Charge with Onsite Solar or Fully Clean Grid"],
         format_func=radio_button_output
         )
