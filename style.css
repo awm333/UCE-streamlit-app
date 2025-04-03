@@ -75,3 +75,12 @@ div[data-testid="stCheckbox"] label {
     padding: 2px 0px !important;  /* Adjust spacing */
     margin: 0px !important;  /* Remove extra margins */
 }
+
+div[data-testid="stMetric"] > label,
+div[data-testid="stSelectbox"] label,
+div[data-testid="stSlider"] label,
+div[data-testid="stRadio"] label,
+div[data-testid="stCheckbox"] label {
+    font-size: 1px !important;  /* Adjust font size */
+    font-weight: bold !important;  /* Make labels bold */
+}
