@@ -342,8 +342,8 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
         st.markdown("""
                   <style>
                       .custom-metric {
-                          text-align: center;
-                          font-weight: bold;
+                          text-align: left;
+                          font-weight: light;
                           font-size: 18px;
                       }
                       .custom-value {
