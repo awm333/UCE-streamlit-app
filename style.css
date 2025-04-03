@@ -59,7 +59,7 @@ div[data-testid="stCheckbox"] label {
     padding: 0px !important;
     margin: 0px !important;
     width: auto !important;
-    white-space: nowrap; /* Prevents label from wrapping */
+    /*white-space: nowrap;*/
 }
 div[data-testid="stCheckbox"] input[type="checkbox"] {
     margin-left: auto !important; /* Forces checkbox to the far right */
