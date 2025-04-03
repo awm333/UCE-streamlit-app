@@ -339,6 +339,27 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
                                                                                                                                                        '')),
                   label_visibility = "visible",
                   help = "The year during which the running lifetime cost of ownership of the EV is less than the ICEV")
+        st.markdown("""
+                  <style>
+                      .custom-metric {
+                          text-align: center;
+                          font-weight: bold;
+                          font-size: 18px;
+                      }
+                      .custom-value {
+                          font-size: 32px;
+                      }
+                      .custom-delta {
+                          color: green;
+                          font-size: 20px;
+                      }
+                  </style>
+                  <div class="custom-metric">
+                      Total Sales <br>
+                      <span class="custom-value">10,000</span> <br>
+                      <span class="custom-delta">(+5%)</span>
+                  </div>
+              """, unsafe_allow_html=True)
         
         st.markdown(' ')
         st.markdown(' ')
