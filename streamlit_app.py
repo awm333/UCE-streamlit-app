@@ -300,16 +300,22 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     ax1.legend_.remove()
     ax1.legend(handles=legend_patches, title="Model", fontsize=28, title_fontsize=32)
 
-
     ### Streamlit ###
 
     #col1, col_space, col2 = st.columns([12,1,4])
     col1, col2 = st.columns([3.5,1])
     with col1:
+        
         st.markdown("<h2 style='text-align: center;'>Cost of Ownership</h2>", unsafe_allow_html=True)
+        with st.expander(label = "How to Read This Cost of Ownership Chart"):
+            st.write('This annotated image is an example Cost of Ownership Chart with the default settings:')
+            st.image('How-To Mock Up.jpg')
         st.pyplot(fig1)
 
         st.markdown("<h2 style='text-align: center;'>Emissions</h2>", unsafe_allow_html=True)
+        with st.expander(label = "How to Read This Emissions Chart"):
+            st.write('This annotated image is an example Cost of Ownership Chart with the default settings:')
+            st.image('How-To Mock Up.jpg')
         st.pyplot(fig2)
     
     with col2:
@@ -389,9 +395,9 @@ def radio_button_output(grid_emissions_option):
 
 #st.title('EV vs Gas Vechicles: Cost and Emissions Visualization Tool')
 
-with st.expander(label = "How to Read This Chart"):
-    #st.write('''Insert annotated version of charts here''')
-    st.image('How-To Mock Up.jpg')
+# with st.expander(label = "How to Read This Cost of Ownership Chart"):
+#     st.write('This annotated image is an example Cost of Ownership Chart with the default settings:')
+#     st.image('How-To Mock Up.jpg')
 
 with st.sidebar:
     EV_dropdown = st.selectbox(
