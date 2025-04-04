@@ -301,7 +301,9 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     ax1.legend(handles=legend_patches, title="Model", fontsize=28, title_fontsize=32)
 
     ### Streamlit ###
-
+    breakeven_value = str(int(intersection_point_cost[0]/12)) + str(np.where(((intersection_point_cost[0]/12) == 1), ' Year', ' Years')) + str(np.where((intersection_point_cost[0] % 12 != 0), 
+                                                                                                                                                        ', ' + str(int(intersection_point_cost[0] % 12)) + ' Months', 
+                                                                                                                                                        ''))
     st.markdown("<h2 style='text-align: center;'>Cost of Ownership</h2>", unsafe_allow_html=True)
     with st.expander(label = "How to Read This Cost of Ownership Chart"):
         st.write('This annotated image is an example Cost of Ownership Chart with the default settings:')
@@ -317,8 +319,8 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
                   help = f"Assuming 14 years of ownership--the [average age of cars passenger cars in operation]({vehicle_age_link}) in the United States")
     with met1_col2:
         st.metric(label = "Breakeven After: ",
-            #value = breakeven_value,
-            value = str(int(intersection_point_cost[0]/12)) + str(np.where(((intersection_point_cost[0]/12) == 1), ' Year', ' Years')), 
+            value = breakeven_value,
+            #value = str(int(intersection_point_cost[0]/12)) + str(np.where(((intersection_point_cost[0]/12) == 1), ' Year', ' Years')), 
             label_visibility = "visible",
             help = "The year during which the running lifetime cost of ownership of the EV is less than the ICEV")
 
