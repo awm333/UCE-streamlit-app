@@ -302,8 +302,8 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
 
     ### Streamlit ###
     breakeven_value = str(int(intersection_point_cost[0]/12)) + str(np.where(((intersection_point_cost[0]/12) == 1), ' Year', ' Years')) + str(np.where((intersection_point_cost[0] % 12 != 0), 
-                                                                                                                                                        ', ' + str(int(intersection_point_cost[0] % 12)) + ' Months', 
-                                                                                                                                                        ''))
+                                                                                                                                                       ', ' + str(int(intersection_point_cost[0] % 12)) + ' Months', 
+                                                                                                                                                       ''))
     st.markdown("<h2 style='text-align: center;'>Cost of Ownership</h2>", unsafe_allow_html=True)
     with st.expander(label = "How to Read This Cost of Ownership Chart"):
         st.write('This annotated image is an example Cost of Ownership Chart with the default settings:')
