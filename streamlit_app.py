@@ -309,7 +309,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     st.markdown("<h2 style='text-align: center;'>Cost of Ownership</h2>", unsafe_allow_html=True)
     with st.expander(label = "How to Read This Cost of Ownership Chart"):
         st.write('This annotated image is an example Cost of Ownership Chart with the default settings:')
-        st.image('How-To Mock Up.jpg')
+        st.image('Cost How to Read v3.png')
     st.pyplot(fig1)
 
 
@@ -333,13 +333,13 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
             help = "The year during which the running lifetime cost of ownership of the EV is less than the ICEV")
 
     st.divider()
-    
+
     ## Emissions Plot ##
 
     st.markdown("<h2 style='text-align: center;'>Emissions</h2>", unsafe_allow_html=True)
     with st.expander(label = "How to Read This Emissions Chart"):
         st.write('This annotated image is an example Cost of Ownership Chart with the default settings:')
-        st.image('How-To Mock Up.jpg')
+        st.image('Emissions How to Read.png')
     st.pyplot(fig2)
 
 
