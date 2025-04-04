@@ -438,7 +438,7 @@ with st.sidebar:
         max_value=20000, 
         value=13500, 
         step=500,
-        help='Default set to the average miles driven per year reported by US DOT: 13,500 miles/year',)
+        help='Default set to the average miles driven per year reported by US Department of Transportation: 13,500 miles/year',)
 
     grid_emissions_radio_buttons = st.radio(
         label='**Step 6:** How Are You Charging Your EV?', 
