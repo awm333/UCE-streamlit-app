@@ -23,15 +23,16 @@ div[data-testid="stMetric"] {
     display: flex;
     flex-direction: column;
 }
+
+div[data-testid="stMetric"] div:nth-child(1) {
+    font-size: 1.2rem !important;  /* Adjust as needed */
+    /*font-weight: bold !important;*/
+}
 /* Change the font size of st.metric() Value*/
 div[data-testid="stMetricValue"] {
     font-size: 23px !important;  /* Adjust size */
     /* font-weight: bold !important; */ /* Make it bold */
     /* color: #e63946 !important; */ /* Optional: Change color */
-}
-div[data-testid="stMetric"] div:nth-child(1) {
-    font-size: 1.2rem !important;  /* Adjust as needed */
-    /*font-weight: bold !important;*/
 }
 
 /* Change the font size of st.Expander() Title */
