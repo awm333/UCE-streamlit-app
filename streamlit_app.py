@@ -322,6 +322,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
             label_visibility = "visible",
             help = "The year during which the running lifetime cost of ownership of the EV is less than the ICEV")
 
+    st.divider()
 
 
   
