@@ -354,6 +354,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
         st.markdown(' ')
         st.markdown(' ')
         st.markdown(' ')
+        st.markdown(' ')
         ## Emissions Dashboard Elements ##
 
         st.metric(label = "Saved Emissions: ", 
@@ -412,7 +413,7 @@ with st.sidebar:
         min_value=2.00, 
         max_value=5.00, 
         value=3.20,
-        help='Default set to the average price of gas in Utah, $3.20/gallon',
+        help='Default set to the average price of gas in Utah: $3.20/gallon',
         label_visibility="visible")
         #on_change=)
         
@@ -421,7 +422,7 @@ with st.sidebar:
         min_value=0.00, 
         max_value=0.30, 
         value=0.12,
-        help='Default set to the average cost of electricity in Utah, $0.12/kWh',
+        help='Default set to the average cost of electricity in Utah: $0.12/kWh',
         label_visibility="visible")
 
     tax_credit_link = 'https://homes.rewiringamerica.org/federal-incentives/30d-new-ev-tax-incentive'
@@ -436,7 +437,8 @@ with st.sidebar:
         min_value=0, 
         max_value=20000, 
         value=13500, 
-        step=500)
+        step=500,
+        help='Default set to the average miles driven per year reported by US DOT: 13,500 miles/year',)
 
     grid_emissions_radio_buttons = st.radio(
         label='**Step 6:** How Are You Charging Your EV?', 
