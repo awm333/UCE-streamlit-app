@@ -30,8 +30,8 @@ div[data-testid="stMetricValue"] {
     /* color: #e63946 !important; */ /* Optional: Change color */
 }
 div[data-testid="stMetric"] div:nth-child(1) {
-    font-size: 2rem !important;  /* Adjust as needed */
-    font-weight: bold !important;
+    font-size: 1.2rem !important;  /* Adjust as needed */
+    /*font-weight: bold !important;*/
 }
 
 /* Change the font size of st.Expander() Title */
