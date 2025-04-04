@@ -25,5 +25,5 @@ div[data-testid="stMetricValue"] {
 
 /* Change the font size of st.Expander() Title */
 div[data-testid="stExpander"] details summary p{
-    font-size: 1.13rem;
+    font-size: 1.08rem;
 }
