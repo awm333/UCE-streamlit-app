@@ -326,7 +326,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
                   label_visibility = "visible",
                   help = f"Assuming 14 years of ownership--the [average age of cars passenger cars in operation]({vehicle_age_link}) in the United States")
     with met1_col2:
-        st.metric(label = "Breakeven After: ",
+        st.metric(label = "Breakeven: ",
             value = breakeven_value_cost,
             #value = str(int(intersection_point_cost[0]/12)) + str(np.where(((intersection_point_cost[0]/12) == 1), ' Year', ' Years')), 
             label_visibility = "visible",
@@ -356,7 +356,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
                   label_visibility = "visible",
                   help = f"Assuming 14 years of ownership--the [average age of cars passenger cars in operation]({vehicle_age_link}) in the United States")
     with met2_col2:
-        st.metric(label = "Breakeven After: ",
+        st.metric(label = "Breakeven: ",
                   value = breakeven_value_emissions,
                   label_visibility = "visible",
                   help = "The year during which the running lifetime emissions of the EV is less than the ICEV")
