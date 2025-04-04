@@ -324,6 +324,25 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
 
     st.divider()
 
+    st.markdown("<h2 style='text-align: center;'>Emissions</h2>", unsafe_allow_html=True)
+    with st.expander(label = "How to Read This Cost of Ownership Chart"):
+        st.write('This annotated image is an example Cost of Ownership Chart with the default settings:')
+        st.image('How-To Mock Up.jpg')
+    st.pyplot(fig1)
+
+    met1_col1, met1_col2 = st.columns([1,1])
+    with met1_col1:
+        vehicle_age_link = 'https://www.bts.gov/content/average-age-automobiles-and-trucks-operation-united-states'
+        st.metric(label = "Lifetime Savings: ", 
+                  value = "$" + str(lifetime_cost_savings),
+                  label_visibility = "visible",
+                  help = f"Assuming 14 years of ownership--the [average age of cars passenger cars in operation]({vehicle_age_link}) in the United States")
+    with met1_col2:
+        st.metric(label = "Breakeven After: ",
+            #value = breakeven_value,
+            value = str(int(intersection_point_cost[0]/12)) + str(np.where(((intersection_point_cost[0]/12) == 1), ' Year', ' Years')), 
+            label_visibility = "visible",
+            help = "The year during which the running lifetime cost of ownership of the EV is less than the ICEV")
 
   
     #col1, col_space, col2 = st.columns([12,1,4])
