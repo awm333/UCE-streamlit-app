@@ -308,27 +308,6 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
         st.image('How-To Mock Up.jpg')
     st.pyplot(fig1)
 
-    met_col1, met_col2 = st.columns([1,1])
-    with met_col1:
-        vehicle_age_link = 'https://www.bts.gov/content/average-age-automobiles-and-trucks-operation-united-states'
-        st.metric(label = "Lifetime Savings: ", 
-                  value = "$" + str(lifetime_cost_savings),
-                  label_visibility = "visible",
-                  help = f"Assuming 14 years of ownership--the [average age of cars passenger cars in operation]({vehicle_age_link}) in the United States")
-    with met_col2:
-        st.metric(label = "Breakeven After: ",
-            #value = breakeven_value,
-            value = str(int(intersection_point_cost[0]/12)) + str(np.where(((intersection_point_cost[0]/12) == 1), ' Year', ' Years')), 
-            label_visibility = "visible",
-            help = "The year during which the running lifetime cost of ownership of the EV is less than the ICEV")
-
-
-    st.markdown("<h2 style='text-align: center;'>Emissions</h2>", unsafe_allow_html=True)
-    with st.expander(label = "How to Read This Cost of Ownership Chart"):
-        st.write('This annotated image is an example Cost of Ownership Chart with the default settings:')
-        st.image('How-To Mock Up.jpg')
-    st.pyplot(fig1)
-
     met1_col1, met1_col2 = st.columns([1,1])
     with met1_col1:
         vehicle_age_link = 'https://www.bts.gov/content/average-age-automobiles-and-trucks-operation-united-states'
@@ -343,93 +322,114 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
             label_visibility = "visible",
             help = "The year during which the running lifetime cost of ownership of the EV is less than the ICEV")
 
-  
-    #col1, col_space, col2 = st.columns([12,1,4])
-    col1, col2 = st.columns([3.5,1])
 
-    with col1:
-        st.markdown("<h2 style='text-align: center;'>Cost of Ownership</h2>", unsafe_allow_html=True)
-        with st.expander(label = "How to Read This Cost of Ownership Chart"):
-            st.write('This annotated image is an example Cost of Ownership Chart with the default settings:')
-            st.image('How-To Mock Up.jpg')
-        st.pyplot(fig1)
+    st.markdown("<h2 style='text-align: center;'>Emissions</h2>", unsafe_allow_html=True)
+    with st.expander(label = "How to Read This Emissions Chart"):
+        st.write('This annotated image is an example Cost of Ownership Chart with the default settings:')
+        st.image('How-To Mock Up.jpg')
+    st.pyplot(fig2)
 
-        st.divider()
-
-        st.markdown("<h2 style='text-align: center;'>Emissions</h2>", unsafe_allow_html=True)
-        with st.expander(label = "How to Read This Emissions Chart"):
-            st.write('This annotated image is an example Cost of Ownership Chart with the default settings:')
-            st.image('How-To Mock Up.jpg')
-        st.pyplot(fig2)
-    
-    with col2:
-        st.markdown(' ')
-        st.markdown(' ')
-        st.markdown(' ')
-        st.markdown(' ')
-        st.markdown(' ')
-        st.markdown(' ')
-        st.markdown(' ')
-        st.markdown(' ')
-        st.markdown(' ')
-        st.markdown(' ')
-        st.markdown(' ')
-        st.markdown(' ')
-        
-        ## Cost Dashboard Elements ##
-
+    met2_col1, met2_col2 = st.columns([1,1])
+    with met2_col1:
         vehicle_age_link = 'https://www.bts.gov/content/average-age-automobiles-and-trucks-operation-united-states'
         st.metric(label = "Lifetime Savings: ", 
                   value = "$" + str(lifetime_cost_savings),
                   label_visibility = "visible",
                   help = f"Assuming 14 years of ownership--the [average age of cars passenger cars in operation]({vehicle_age_link}) in the United States")
+    with met2_col2:
+        st.metric(label = "Breakeven After: ",
+            #value = breakeven_value,
+            value = str(int(intersection_point_cost[0]/12)) + str(np.where(((intersection_point_cost[0]/12) == 1), ' Year', ' Years')), 
+            label_visibility = "visible",
+            help = "The year during which the running lifetime cost of ownership of the EV is less than the ICEV")
+
+  
+    # #col1, col_space, col2 = st.columns([12,1,4])
+    # col1, col2 = st.columns([3.5,1])
+
+    # with col1:
+    #     st.markdown("<h2 style='text-align: center;'>Cost of Ownership</h2>", unsafe_allow_html=True)
+    #     with st.expander(label = "How to Read This Cost of Ownership Chart"):
+    #         st.write('This annotated image is an example Cost of Ownership Chart with the default settings:')
+    #         st.image('How-To Mock Up.jpg')
+    #     st.pyplot(fig1)
+
+    #     st.divider()
+
+    #     st.markdown("<h2 style='text-align: center;'>Emissions</h2>", unsafe_allow_html=True)
+    #     with st.expander(label = "How to Read This Emissions Chart"):
+    #         st.write('This annotated image is an example Cost of Ownership Chart with the default settings:')
+    #         st.image('How-To Mock Up.jpg')
+    #     st.pyplot(fig2)
+    
+    # with col2:
+    #     st.markdown(' ')
+    #     st.markdown(' ')
+    #     st.markdown(' ')
+    #     st.markdown(' ')
+    #     st.markdown(' ')
+    #     st.markdown(' ')
+    #     st.markdown(' ')
+    #     st.markdown(' ')
+    #     st.markdown(' ')
+    #     st.markdown(' ')
+    #     st.markdown(' ')
+    #     st.markdown(' ')
         
-        st.markdown(' ')
-        st.markdown(' ')
+    #     ## Cost Dashboard Elements ##
+
+    #     vehicle_age_link = 'https://www.bts.gov/content/average-age-automobiles-and-trucks-operation-united-states'
+    #     st.metric(label = "Lifetime Savings: ", 
+    #               value = "$" + str(lifetime_cost_savings),
+    #               label_visibility = "visible",
+    #               help = f"Assuming 14 years of ownership--the [average age of cars passenger cars in operation]({vehicle_age_link}) in the United States")
+        
+    #     st.markdown(' ')
+    #     st.markdown(' ')
       
-        breakeven_value = str(int(intersection_point_cost[0]/12)) + str(np.where(((intersection_point_cost[0]/12) == 1), ' Year', ' Years')) + str(np.where((intersection_point_cost[0] % 12 != 0), 
-                                                                                                                                                       ', ' + str(int(intersection_point_cost[0] % 12)) + ' Months', 
-                                                                                                                                                       ''))
-        st.metric(label = "Breakeven After: ",
-                  #value = breakeven_value,
-                  value = str(int(intersection_point_cost[0]/12)) + str(np.where(((intersection_point_cost[0]/12) == 1), ' Year', ' Years')), 
-                  label_visibility = "visible",
-                  help = "The year during which the running lifetime cost of ownership of the EV is less than the ICEV")
+    #     breakeven_value = str(int(intersection_point_cost[0]/12)) + str(np.where(((intersection_point_cost[0]/12) == 1), ' Year', ' Years')) + str(np.where((intersection_point_cost[0] % 12 != 0), 
+    #                                                                                                                                                    ', ' + str(int(intersection_point_cost[0] % 12)) + ' Months', 
+    #                                                                                                                                                    ''))
+    #     st.metric(label = "Breakeven After: ",
+    #               #value = breakeven_value,
+    #               value = str(int(intersection_point_cost[0]/12)) + str(np.where(((intersection_point_cost[0]/12) == 1), ' Year', ' Years')), 
+    #               label_visibility = "visible",
+    #               help = "The year during which the running lifetime cost of ownership of the EV is less than the ICEV")
 
-        st.markdown(' ')
-        st.markdown(' ')
-        st.markdown(' ')
-        st.markdown(' ')
-        st.markdown(' ')
-        st.markdown(' ')
-        st.markdown(' ')
-        st.markdown(' ')
-        st.markdown(' ')
-        st.markdown(' ')
-        st.markdown(' ')
-        st.markdown(' ')
-        st.markdown(' ')
-        st.markdown(' ')
-        st.markdown(' ')
-        st.markdown(' ')
-        st.markdown(' ')
-        st.markdown(' ')
-        st.markdown(' ')
-        st.markdown(' ')
-        ## Emissions Dashboard Elements ##
+    #     st.markdown(' ')
+    #     st.markdown(' ')
+    #     st.markdown(' ')
+    #     st.markdown(' ')
+    #     st.markdown(' ')
+    #     st.markdown(' ')
+    #     st.markdown(' ')
+    #     st.markdown(' ')
+    #     st.markdown(' ')
+    #     st.markdown(' ')
+    #     st.markdown(' ')
+    #     st.markdown(' ')
+    #     st.markdown(' ')
+    #     st.markdown(' ')
+    #     st.markdown(' ')
+    #     st.markdown(' ')
+    #     st.markdown(' ')
+    #     st.markdown(' ')
+    #     st.markdown(' ')
+    #     st.markdown(' ')
+    #     ## Emissions Dashboard Elements ##
 
-        st.metric(label = "Saved Emissions: ", 
-                  value = str(lifetime_emissions_savings) + " tCO2", #" tCO₂",
-                  label_visibility = "visible",
-                  help = f"Assuming 14 years of ownership--the [average age of cars passenger cars in operation]({vehicle_age_link}) in the United States")
+    #     st.metric(label = "Saved Emissions: ", 
+    #               value = str(lifetime_emissions_savings) + " tCO2", #" tCO₂",
+    #               label_visibility = "visible",
+    #               help = f"Assuming 14 years of ownership--the [average age of cars passenger cars in operation]({vehicle_age_link}) in the United States")
         
-        st.markdown(' ')
-        st.markdown(' ')
+    #     st.markdown(' ')
+    #     st.markdown(' ')
 
-        st.metric(label = "Breakeven After: ",
-                  value = str(int(intersection_point_emissions[0]/12)) + str(np.where(((intersection_point_emissions[0]/12) == 1), ' Year', ' Years')),
-                  label_visibility = "visible",
-                  help = "The year during which the running lifetime emissions of the EV is less than the ICEV")
+    #     st.metric(label = "Breakeven After: ",
+    #               value = str(int(intersection_point_emissions[0]/12)) + str(np.where(((intersection_point_emissions[0]/12) == 1), ' Year', ' Years')),
+    #               label_visibility = "visible",
+    #               help = "The year during which the running lifetime emissions of the EV is less than the ICEV")
     
 def add_make_to_model(model):
     make = vehicles_df[vehicles_df['model'] == model]['make'].values[0]
