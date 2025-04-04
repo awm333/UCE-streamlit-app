@@ -29,8 +29,8 @@ div[data-testid="stMetricValue"] {
     /* font-weight: bold !important; */ /* Make it bold */
     /* color: #e63946 !important; */ /* Optional: Change color */
 }
-div[data-testid="stMetric"] > label {
-    font-size: 1.1rem !important;  /* Change size as needed */
+div[data-testid="stMetric"] div:nth-child(1) {
+    font-size: 2rem !important;  /* Adjust as needed */
     font-weight: bold !important;
 }
 
