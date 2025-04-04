@@ -29,6 +29,10 @@ div[data-testid="stMetricValue"] {
     /* font-weight: bold !important; */ /* Make it bold */
     /* color: #e63946 !important; */ /* Optional: Change color */
 }
+div[data-testid="stMetric"] > label {
+    font-size: 1.1rem !important;  /* Change size as needed */
+    font-weight: bold !important;
+}
 
 /* Change the font size of st.Expander() Title */
 div[data-testid="stExpander"] details summary p{
