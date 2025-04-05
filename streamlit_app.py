@@ -15,7 +15,7 @@ import matplotlib.patches as mpatches
 import seaborn as sns
 import numpy as np
 
-vehicles_df = pd.read_csv('data/limited_vehicles.csv')
+vehicles_df = pd.read_csv('data/vehicledata.csv')
 grid_emissions_df = pd.read_csv('data/grid_emissions_forecast.csv')
 
 def emissions_intersection_point_months(df_EV, df_ICEV):
@@ -473,6 +473,7 @@ def radio_button_output(grid_emissions_option):
 # with st.expander(label = "How to Read This Cost of Ownership Chart"):
 #     st.write('This annotated image is an example Cost of Ownership Chart with the default settings:')
 #     st.image('How-To Mock Up.jpg')
+st.dataframe(vehicles_df)
 
 with st.sidebar:
     EV_dropdown = st.selectbox(
