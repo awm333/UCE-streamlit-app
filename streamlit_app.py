@@ -473,7 +473,6 @@ def radio_button_output(grid_emissions_option):
 # with st.expander(label = "How to Read This Cost of Ownership Chart"):
 #     st.write('This annotated image is an example Cost of Ownership Chart with the default settings:')
 #     st.image('How-To Mock Up.jpg')
-st.dataframe(vehicles_df)
 
 with st.sidebar:
     EV_dropdown = st.selectbox(
