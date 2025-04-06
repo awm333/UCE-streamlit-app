@@ -265,6 +265,11 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
                 hue='fuelType',
                 palette=color_mapping,
                 ax=ax1)
+    
+
+ 
+
+
     cost_formatter = ticker.FuncFormatter(lambda x, pos: f'${x:,.0f}')
     ax1.yaxis.set_major_formatter(cost_formatter)
     ax1.yaxis.set_minor_formatter(cost_formatter)
@@ -300,6 +305,35 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     ax1.legend_.remove()
     ax1.legend(handles=legend_patches, title="Model", fontsize=28, title_fontsize=32)
 
+   ## MSRP Bar Charts ##
+
+    initial_values = plot_func_df[plot_func_df['cumulative_months'] == 0]
+
+    position_by_fuelType = {
+        "(w/o Tax Credit)": -0.5,
+        "(w/ Tax Credit)": -0.5,
+        "Regular": 0.5,
+        "Electricity": -0.5
+    }
+
+    for i, row in initial_values.iterrows():
+        fuel = row['fuelType']
+        MSRP = row['running_cost_of_ownership']
+        color = color_mapping.get(fuel, 'gray')
+    
+        # Use overlay map to get offset
+        group_key = position_by_fuelType.get(fuel, i)
+        x = group_key
+
+        ax1.bar(
+            x=x, 
+            height=MSRP, 
+            width=1, 
+            color=color, 
+            #label=f"{fuel} (Initial Cost)", 
+            #zorder=5
+        )
+    ax1.set_xlim(-1, 182)
 
     ### Streamlit ###
 
