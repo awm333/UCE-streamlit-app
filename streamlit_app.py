@@ -360,7 +360,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
                   label_visibility = "visible",
                   help = f"Assuming 14 years of ownership--the [average age of cars passenger cars in operation]({vehicle_age_link}) in the United States")
     with met1_col2:
-        st.metric(label = "Breakeven: ",
+        st.metric(label = "Cost Breakeven: ",
             value = breakeven_value_cost,
             #value = str(int(intersection_point_cost[0]/12)) + str(np.where(((intersection_point_cost[0]/12) == 1), ' Year', ' Years')), 
             label_visibility = "visible",
@@ -509,6 +509,8 @@ def radio_button_output(grid_emissions_option):
 #     st.image('How-To Mock Up.jpg')
 
 with st.sidebar:
+    st.title('Start Here!')
+
     EV_dropdown = st.selectbox(
         label='**Step 1:** Choose Your EV:',
         options=vehicles_df[vehicles_df['fuelType'] == 'Electricity']['model'],
