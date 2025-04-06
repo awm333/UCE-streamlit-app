@@ -184,6 +184,15 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     UCE_red = '#D84829'
     color_mapping = {'Electricity': f'{UCE_blue}', 'Regular': f'{UCE_red}'}
 
+    ## For MSRP/Manufacture Emissions Bar Charts ##
+    initial_values = plot_func_df[plot_func_df['cumulative_months'] == 0]
+
+    position_by_fuelType = {
+        "(w/o Tax Credit)": -0.5,
+        "(w/ Tax Credit)": -0.5,
+        "Regular": 0.5,
+        "Electricity": -0.5
+    }
 
     ### Emissions Plot ###
 
@@ -193,13 +202,14 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
                 hue='fuelType',
                 palette=color_mapping,
                 ax=ax2)
+    
     ax2.set_title('\n')
     ax2.set_xlabel('\n Years of Ownership \n', fontsize=32)#, fontweight='bold')
     ax2.set_ylabel('\n Emissions (tCO₂) \n', fontsize=40)
     #ax2.set_ylim(0,140)
     ax2.set_ylim(bottom = 0)
     ax2.set_xlim(0, 182)
-    xtick_positions = range(12, 181, 12)
+    xtick_positions = range(0, 181, 12)
     ax2.set_xticks(xtick_positions)
     ax2.set_xticklabels([f"{m//12}" for m in xtick_positions])
     ax2.tick_params(axis='x', colors='black')
@@ -217,6 +227,25 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
                                     for label1, color in color_mapping.items()]
     ax2.legend(handles=legend_patches, title="Model", fontsize=28, title_fontsize=32)
 
+    ## Manufacture Emissions Bar Charts ##
+    for i, row in initial_values.iterrows():
+        fuel = row['fuelType']
+        manu_emissions = row['running_emissions']
+        color = color_mapping.get(fuel, 'gray')
+    
+        group_key = position_by_fuelType.get(fuel, i)
+        x = group_key
+
+        ax2.bar(
+            x=x, 
+            height=manu_emissions, 
+            width=1, 
+            color=color, 
+            #label=f"{fuel} (Initial Cost)", 
+            #zorder=5
+        )
+    ax2.set_xlim(-1, 182)
+
     if apply_tax_credit:
         tax_credit_EV_df = EV_model_df
         tax_credit_EV_df['running_cost_of_ownership'] = tax_credit_EV_df['running_cost_of_ownership'] - 7500
@@ -227,6 +256,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
         intersection_point_cost = cost_intersection_point_months(tax_credit_EV_df, ICEV_model_df)
         lifetime_cost_savings = calculate_lifetime_cost_savings(tax_credit_EV_df, ICEV_model_df)
 
+    initial_values = plot_func_df[plot_func_df['cumulative_months'] == 0]
 
     ### Interesection Points ###
 
@@ -265,11 +295,6 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
                 hue='fuelType',
                 palette=color_mapping,
                 ax=ax1)
-    
-
- 
-
-
     cost_formatter = ticker.FuncFormatter(lambda x, pos: f'${x:,.0f}')
     ax1.yaxis.set_major_formatter(cost_formatter)
     ax1.yaxis.set_minor_formatter(cost_formatter)
@@ -305,33 +330,21 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     ax1.legend_.remove()
     ax1.legend(handles=legend_patches, title="Model", fontsize=28, title_fontsize=32)
 
-   ## MSRP Bar Charts ##
-
-    initial_values = plot_func_df[plot_func_df['cumulative_months'] == 0]
-
-    position_by_fuelType = {
-        "(w/o Tax Credit)": -0.5,
-        "(w/ Tax Credit)": -0.5,
-        "Regular": 0.5,
-        "Electricity": -0.5
-    }
-
+    ## MSRP Bar Charts ##
     for i, row in initial_values.iterrows():
         fuel = row['fuelType']
         MSRP = row['running_cost_of_ownership']
         color = color_mapping.get(fuel, 'gray')
     
-        # Use overlay map to get offset
         group_key = position_by_fuelType.get(fuel, i)
         x = group_key
-
+        z = 3 if "w/ Tax Credit" in fuel else 2
         ax1.bar(
             x=x, 
             height=MSRP, 
             width=1, 
             color=color, 
-            #label=f"{fuel} (Initial Cost)", 
-            #zorder=5
+            zorder=z
         )
     ax1.set_xlim(-1, 182)
 
