@@ -571,7 +571,7 @@ with st.sidebar:
         help='Default set to the average miles driven per year reported by US Department of Transportation: 13,500 miles/year',)
 
     grid_emissions_radio_buttons = st.radio(
-        label='**Step 6:** How Are You Charging Your EV?', 
+        label='**Step 6:** Choose an Energy Mix to Charge Your EV:', 
         options=[1,2,3,4],
         captions=["Rocky Mountain Power's Planned Energy Mix", 
                   "Assuming No Changes to Rocky Mountain Power's 2023 Energy Mix", 
