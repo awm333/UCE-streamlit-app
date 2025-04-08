@@ -26,3 +26,6 @@ div[data-testid="stMetric"] {
 div[data-testid="stExpander"] details summary p{
     font-size: 1.08rem;
 }
+hr {
+    border-color: black;
+}
