@@ -188,10 +188,10 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     initial_values = plot_func_df[plot_func_df['cumulative_months'] == 0]
 
     position_by_fuelType = {
-        "(w/o Tax Credit)": -0.5,
-        "(w/ Tax Credit)": -0.5,
-        "Regular": 0.5,
-        "Electricity": -0.5
+        "(w/o Tax Credit)": -1,
+        "(w/ Tax Credit)": -1,
+        "Regular": 1,
+        "Electricity": -1
     }
 
     ### Emissions Plot ###
@@ -202,13 +202,11 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
                 hue='fuelType',
                 palette=color_mapping,
                 ax=ax2)
-    
     ax2.set_title('\n')
     ax2.set_xlabel('\n Years of Ownership \n', fontsize=32)#, fontweight='bold')
     ax2.set_ylabel('\n Emissions (tCO₂) \n', fontsize=40)
-    #ax2.set_ylim(0,140)
     ax2.set_ylim(bottom = 0)
-    ax2.set_xlim(0, 182)
+    ax2.set_xlim(-2, 182)
     xtick_positions = range(0, 181, 12)
     ax2.set_xticks(xtick_positions)
     ax2.set_xticklabels([f"{m//12}" for m in xtick_positions])
@@ -219,8 +217,8 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
         label.set_fontsize(30)
     ax2.spines['top'].set_visible(False)
     ax2.spines['right'].set_visible(False)
-    ax2.lines[0].set_linewidth(3)
-    ax2.lines[1].set_linewidth(3)
+    ax2.lines[0].set_linewidth(5)
+    ax2.lines[1].set_linewidth(5)
     ax2.legend_.remove()
     legend_patches = [mpatches.Patch(color=color, 
                                      label=plot_func_df.loc[plot_func_df['fuelType'] == label1, 'model'].iloc[0])
@@ -239,12 +237,12 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
         ax2.bar(
             x=x, 
             height=manu_emissions, 
-            width=1, 
+            width=2, 
             color=color, 
             #label=f"{fuel} (Initial Cost)", 
             #zorder=5
         )
-    ax2.set_xlim(-1, 182)
+    
 
     if apply_tax_credit:
         tax_credit_EV_df = EV_model_df
@@ -302,7 +300,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     ax1.set_xlabel('\n Years of Ownership \n', fontsize=32)#, fontweight='bold')
     ax1.set_ylabel('\n Cost of Ownership ($) \n', fontsize=40)
     ax1.set_ylim(bottom = 0)
-    ax1.set_xlim(0, 182)
+    ax1.set_xlim(-2, 182)
     #xtick_positions = range(12, 181, 12)
     ax1.set_xticks(xtick_positions)
     ax1.set_xticklabels([f"{m//12}" for m in xtick_positions])
@@ -313,11 +311,11 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
         label.set_fontsize(30)
     ax1.spines['top'].set_visible(False)
     ax1.spines['right'].set_visible(False)
-    ax1.lines[0].set_linewidth(3)
-    ax1.lines[1].set_linewidth(3)
+    ax1.lines[0].set_linewidth(5)
+    ax1.lines[1].set_linewidth(5)
     if apply_tax_credit:
-        ax1.lines[0].set_linewidth(1) #set old EV line to thin
-        ax1.lines[2].set_linewidth(3)
+        ax1.lines[0].set_linewidth(2) #set old EV line to thin
+        ax1.lines[2].set_linewidth(5)
         legend_patches = [mpatches.Patch(color=color, 
                                          label=(plot_func_df.loc[plot_func_df['fuelType'] == label1, 'model'].iloc[0] + " " + label1)
                                          if not plot_func_df.loc[plot_func_df['fuelType'] == label1, 'model'].empty else label1) 
@@ -342,11 +340,10 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
         ax1.bar(
             x=x, 
             height=MSRP, 
-            width=1, 
+            width=2, 
             color=color, 
             zorder=z
         )
-    ax1.set_xlim(-1, 182)
 
 
     ### Streamlit ###
