@@ -443,7 +443,7 @@ with st.sidebar:
     EV_dropdown = st.selectbox(
         label='**Step 1:** Choose Your EV:',
         options=vehicles_df[vehicles_df['fuelType'] == 'Electricity']['model'],
-        index=8,
+        #index=8,
         format_func=add_make_to_model
         )
     
