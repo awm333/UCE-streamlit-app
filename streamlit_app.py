@@ -354,7 +354,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     st.markdown("<h2 style='text-align: center;'>Cost of Ownership</h2>", unsafe_allow_html=True)
     with st.expander(label = "How to Read This Cost of Ownership Chart"):
         st.write('This annotated image is an example Cost of Ownership chart with the default settings:')
-        st.image('Cost How to Read v3.png')
+        st.image('Cost Annotated.png')
     st.pyplot(fig1)
 
 
@@ -392,7 +392,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     st.markdown("<h2 style='text-align: center;'>Emissions</h2>", unsafe_allow_html=True)
     with st.expander(label = "How to Read This Emissions Chart"):
         st.write('This annotated image is an example Emissions chart with the default settings:')
-        st.image('Emissions How to Read.png')
+        st.image('Emissions Annotated.png')
     st.pyplot(fig2)
 
 
