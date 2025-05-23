@@ -443,7 +443,7 @@ with st.sidebar:
     EV_dropdown = st.selectbox(
         label='**Step 1:** Choose Your EV:',
         options=vehicles_df[vehicles_df['fuelType'] == 'Electricity']['model'],
-        #index=8,
+        index=8,
         format_func=add_make_to_model
         )
     
@@ -500,9 +500,10 @@ with st.sidebar:
     st.markdown(' ')
     st.markdown(' ')
     st.write('To learn more about this tool, read [How This Tool Works](https://hub.utahcleanenergy.org/wp-content/uploads/2025/04/How-This-Tool-Works.pdf)')
+    st.write('Created By Adrian Martino')
 
 plot_cars(model_1=EV_dropdown, model_2=ICEV_dropdown, gas_price=gas_price_slider, kwh_price=electricity_slider, grid_emissions_option=grid_emissions_radio_buttons, miles_per_year=miles_input_box, apply_tax_credit=tax_credit_checkbox)
 
 st.markdown(' ')
 st.markdown(' ')
-#st.write('Created By Adrian Martino')
+
