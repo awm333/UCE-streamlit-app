@@ -141,7 +141,7 @@ def plot_cars(model_1, model_2, gas_price=3.15, kwh_price=0.12, grid_emissions_o
     EV_model_df = pd.merge(EV_model_df, time_of_ownership_df, how='cross')
     ICEV_model_df = pd.merge(ICEV_model_df, time_of_ownership_df, how='cross')
 
-    grid_emissions_df['merge_year'] = grid_emissions_df['forecast_year'] - 2023
+    grid_emissions_df['merge_year'] = grid_emissions_df['forecast_year'] - 2025
 
     EV_model_df = pd.merge(EV_model_df, grid_emissions_df, how='left', left_on=['years_of_ownership'], right_on=['merge_year'])
     ICEV_model_df = pd.merge(ICEV_model_df, grid_emissions_df, how='left', left_on=['years_of_ownership'], right_on=['merge_year'])
